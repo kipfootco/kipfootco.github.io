@@ -1,0 +1,453 @@
+/* ============================================================
+   KIPFOOT DESIGN SYSTEM — Colors & Typography Tokens
+   Version 1.0 — May 2026
+   ============================================================ */
+
+/* -----------------------------------------------------------
+   GOOGLE FONTS IMPORT
+   DM Sans (display/headlines) + IBM Plex Sans (body/UI) + IBM Plex Mono (code/numbers)
+   NOTE: No proprietary fonts were specified in the brief.
+   These are the nearest high-quality matches.
+   ----------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+
+  /* ----------------------------------------------------------
+     PRIMITIVE COLOR SCALES
+     ---------------------------------------------------------- */
+
+  /* Neutrals */
+  --neutral-0:   #ffffff;
+  --neutral-50:  #f4f4f8;
+  --neutral-100: #e8e8f0;
+  --neutral-200: #c8c8d8;
+  --neutral-300: #a0a0b0;
+  --neutral-400: #707080;
+  --neutral-500: #505060;
+  --neutral-600: #383840;
+  --neutral-700: #242430;
+  --neutral-800: #1c1c22;
+  --neutral-850: #141418;
+  --neutral-900: #0c0c0f;
+  --neutral-950: #08080a;
+
+  /* Orange scale */
+  --orange-100: #fff0ea;
+  --orange-200: #ffd4be;
+  --orange-300: #ffaa80;
+  --orange-400: #ff8652;
+  --orange-500: #ff6b35;
+  --orange-600: #e85a24;
+  --orange-700: #c44515;
+  --orange-800: #7f2d0a;
+  --orange-900: #3d1504;
+
+  /* Amber scale */
+  --amber-400:  #ffcc66;
+  --amber-500:  #ffb347;
+  --amber-600:  #e8962e;
+
+  /* Green scale */
+  --green-300:  #86efac;
+  --green-400:  #4ade80;
+  --green-500:  #22c55e;
+  --green-600:  #16a34a;
+  --green-800:  #14532d;
+
+  /* Cyan scale */
+  --cyan-300:   #67e8f9;
+  --cyan-400:   #22d3ee;
+  --cyan-500:   #06b6d4;
+  --cyan-600:   #0891b2;
+
+  /* Purple scale */
+  --purple-300: #c4b5fd;
+  --purple-400: #a78bfa;
+  --purple-500: #8b5cf6;
+  --purple-600: #7c3aed;
+
+  /* Red scale */
+  --red-300:    #fca5a5;
+  --red-400:    #f87171;
+  --red-500:    #ef4444;
+  --red-700:    #b91c1c;
+  --red-900:    #7f1d1d;
+
+  /* ----------------------------------------------------------
+     SEMANTIC SURFACE TOKENS
+     ---------------------------------------------------------- */
+  --bg-base:        #0c0c0f;   /* page background */
+  --bg-surface:     #141418;   /* card / panel */
+  --bg-raised:      #1c1c22;   /* elevated modals, popovers */
+  --bg-overlay:     #242430;   /* hover surfaces, secondary panels */
+  --bg-input:       #1c1c22;   /* form input background */
+  --bg-code:        #0c0c0f;   /* code block background */
+
+  /* ----------------------------------------------------------
+     SEMANTIC FOREGROUND / TEXT TOKENS
+     ---------------------------------------------------------- */
+  --fg-1:     #f0f0f4;   /* primary text, headlines */
+  --fg-2:     #a0a0b0;   /* secondary, labels, descriptions */
+  --fg-3:     #606070;   /* muted, disabled, placeholder */
+  --fg-inv:   #0c0c0f;   /* text on colored/light surfaces */
+  --fg-link:  #22d3ee;   /* inline links */
+  --fg-code:  #4ade80;   /* inline code text */
+
+  /* ----------------------------------------------------------
+     BRAND ACCENT TOKENS
+     ---------------------------------------------------------- */
+  --accent-orange:  #ff6b35;
+  --accent-amber:   #ffb347;
+  --accent-green:   #4ade80;
+  --accent-cyan:    #22d3ee;
+  --accent-purple:  #a78bfa;
+  --accent-red:     #f87171;
+
+  /* Category hues for tool cards */
+  --cat-structural:  #ff6b35;   /* orange */
+  --cat-geotechnical:#ffb347;   /* amber */
+  --cat-hydraulic:   #22d3ee;   /* cyan */
+  --cat-electrical:  #a78bfa;   /* purple */
+  --cat-mechanical:  #4ade80;   /* green */
+  --cat-wind:        #67e8f9;   /* light cyan */
+
+  /* ----------------------------------------------------------
+     BORDER TOKENS
+     ---------------------------------------------------------- */
+  --border-subtle:  rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.10);
+  --border-strong:  rgba(255, 255, 255, 0.18);
+  --border-focus:   #ff6b35;
+  --border-error:   #f87171;
+  --border-success: #4ade80;
+
+  /* ----------------------------------------------------------
+     SHADOW / ELEVATION TOKENS
+     ---------------------------------------------------------- */
+  --shadow-0: none;
+  --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.40);
+  --shadow-2: 0 4px 16px rgba(0, 0, 0, 0.50);
+  --shadow-3: 0 8px 32px rgba(0, 0, 0, 0.60), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-glow-orange: 0 0 24px rgba(255, 107, 53, 0.20);
+  --shadow-glow-cyan:   0 0 24px rgba(34, 211, 238, 0.15);
+
+  /* ----------------------------------------------------------
+     CORNER RADIUS TOKENS
+     ---------------------------------------------------------- */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  /* ----------------------------------------------------------
+     SPACING SCALE (base 4px)
+     ---------------------------------------------------------- */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+  --space-32:  128px;
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY — FONT FAMILIES
+     ---------------------------------------------------------- */
+  --font-display: 'DM Sans', system-ui, sans-serif;
+  --font-body:    'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY — TYPE SCALE
+     ---------------------------------------------------------- */
+  --text-xs:    11px;
+  --text-sm:    13px;
+  --text-base:  15px;
+  --text-md:    18px;
+  --text-lg:    22px;
+  --text-xl:    28px;
+  --text-2xl:   36px;
+  --text-3xl:   48px;
+  --text-4xl:   64px;
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY — LINE HEIGHTS
+     ---------------------------------------------------------- */
+  --leading-tight:  1.2;
+  --leading-snug:   1.35;
+  --leading-normal: 1.5;
+  --leading-relaxed:1.65;
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY — LETTER SPACING
+     ---------------------------------------------------------- */
+  --tracking-tight:  -0.03em;
+  --tracking-normal: 0em;
+  --tracking-wide:   0.04em;
+  --tracking-wider:  0.08em;
+  --tracking-widest: 0.12em;
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY — FONT WEIGHTS
+     ---------------------------------------------------------- */
+  --weight-light:   300;
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold:600;
+  --weight-bold:    700;
+
+  /* ----------------------------------------------------------
+     ANIMATION TOKENS
+     ---------------------------------------------------------- */
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.30, 1);
+  --ease-in-out:    cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-micro: 80ms;
+  --duration-fast:  120ms;
+  --duration-base:  200ms;
+  --duration-slow:  300ms;
+  --duration-xslow: 500ms;
+
+  /* ----------------------------------------------------------
+     LAYOUT TOKENS
+     ---------------------------------------------------------- */
+  --max-content: 1200px;
+  --nav-height:  56px;
+  --sidebar-nav: 240px;
+  --sidebar-tool:320px;
+
+  /* ----------------------------------------------------------
+     SEMANTIC TYPE STYLES (composite)
+     These map the scale to semantic roles.
+     ---------------------------------------------------------- */
+
+  /* Display: hero, landing */
+  --type-display-size:    var(--text-3xl);
+  --type-display-weight:  var(--weight-bold);
+  --type-display-leading: var(--leading-tight);
+  --type-display-tracking:var(--tracking-tight);
+  --type-display-family:  var(--font-display);
+
+  /* Heading 1 */
+  --type-h1-size:    var(--text-2xl);
+  --type-h1-weight:  var(--weight-semibold);
+  --type-h1-leading: var(--leading-tight);
+  --type-h1-family:  var(--font-display);
+
+  /* Heading 2 */
+  --type-h2-size:    var(--text-xl);
+  --type-h2-weight:  var(--weight-semibold);
+  --type-h2-leading: var(--leading-snug);
+  --type-h2-family:  var(--font-display);
+
+  /* Heading 3 */
+  --type-h3-size:    var(--text-lg);
+  --type-h3-weight:  var(--weight-medium);
+  --type-h3-leading: var(--leading-snug);
+  --type-h3-family:  var(--font-display);
+
+  /* Body */
+  --type-body-size:    var(--text-base);
+  --type-body-weight:  var(--weight-regular);
+  --type-body-leading: var(--leading-normal);
+  --type-body-family:  var(--font-body);
+
+  /* Body small */
+  --type-sm-size:    var(--text-sm);
+  --type-sm-weight:  var(--weight-regular);
+  --type-sm-leading: var(--leading-normal);
+  --type-sm-family:  var(--font-body);
+
+  /* Label / UI */
+  --type-label-size:    var(--text-sm);
+  --type-label-weight:  var(--weight-medium);
+  --type-label-leading: var(--leading-tight);
+  --type-label-family:  var(--font-body);
+  --type-label-tracking:var(--tracking-wide);
+
+  /* Caption / overline */
+  --type-caption-size:    var(--text-xs);
+  --type-caption-weight:  var(--weight-medium);
+  --type-caption-leading: var(--leading-tight);
+  --type-caption-tracking:var(--tracking-widest);
+  --type-caption-family:  var(--font-body);
+
+  /* Code */
+  --type-code-size:    var(--text-sm);
+  --type-code-weight:  var(--weight-regular);
+  --type-code-leading: var(--leading-relaxed);
+  --type-code-family:  var(--font-mono);
+
+  /* Mono numeric / KPI value */
+  --type-kpi-size:    var(--text-2xl);
+  --type-kpi-weight:  var(--weight-semibold);
+  --type-kpi-family:  var(--font-mono);
+  --type-kpi-leading: var(--leading-tight);
+}
+
+/* ============================================================
+   BASE RESET & ELEMENT STYLES
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--fg-1);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT DEFAULTS
+   ============================================================ */
+
+h1 {
+  font-family: var(--type-h1-family);
+  font-size: var(--type-h1-size);
+  font-weight: var(--type-h1-weight);
+  line-height: var(--type-h1-leading);
+  color: var(--fg-1);
+  letter-spacing: var(--tracking-tight);
+}
+
+h2 {
+  font-family: var(--type-h2-family);
+  font-size: var(--type-h2-size);
+  font-weight: var(--type-h2-weight);
+  line-height: var(--type-h2-leading);
+  color: var(--fg-1);
+  letter-spacing: var(--tracking-tight);
+}
+
+h3 {
+  font-family: var(--type-h3-family);
+  font-size: var(--type-h3-size);
+  font-weight: var(--type-h3-weight);
+  line-height: var(--type-h3-leading);
+  color: var(--fg-1);
+}
+
+h4 {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  color: var(--fg-1);
+}
+
+p {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--fg-2);
+}
+
+a {
+  color: var(--fg-link);
+  text-decoration: none;
+  transition: opacity var(--duration-fast) var(--ease-out-expo);
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  background: var(--bg-code);
+  color: var(--fg-code);
+  border-radius: var(--radius-sm);
+}
+
+code {
+  padding: 2px 6px;
+  border: 1px solid var(--border-subtle);
+}
+
+pre {
+  padding: var(--space-4);
+  border: 1px solid var(--border-default);
+  overflow-x: auto;
+  line-height: var(--leading-relaxed);
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+
+.text-display {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-1);
+}
+
+.text-h1  { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-semibold); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); }
+.text-h2  { font-family: var(--font-display); font-size: var(--text-xl);  font-weight: var(--weight-semibold); line-height: var(--leading-snug); }
+.text-h3  { font-family: var(--font-display); font-size: var(--text-lg);  font-weight: var(--weight-medium);   line-height: var(--leading-snug); }
+.text-lg  { font-size: var(--text-md);  line-height: var(--leading-normal); }
+.text-base{ font-size: var(--text-base);line-height: var(--leading-normal); }
+.text-sm  { font-size: var(--text-sm);  line-height: var(--leading-normal); }
+.text-xs  { font-size: var(--text-xs);  line-height: var(--leading-tight);  }
+
+.text-1   { color: var(--fg-1); }
+.text-2   { color: var(--fg-2); }
+.text-3   { color: var(--fg-3); }
+
+.font-mono   { font-family: var(--font-mono); }
+.font-display{ font-family: var(--font-display); }
+.font-body   { font-family: var(--font-body); }
+
+.weight-light   { font-weight: var(--weight-light); }
+.weight-regular { font-weight: var(--weight-regular); }
+.weight-medium  { font-weight: var(--weight-medium); }
+.weight-semibold{ font-weight: var(--weight-semibold); }
+.weight-bold    { font-weight: var(--weight-bold); }
+
+.tracking-wide  { letter-spacing: var(--tracking-wide); }
+.tracking-wider { letter-spacing: var(--tracking-wider); }
+.tracking-widest{ letter-spacing: var(--tracking-widest); }
+
+/* Surface utilities */
+.surface-base    { background: var(--bg-base); }
+.surface-panel   { background: var(--bg-surface); }
+.surface-raised  { background: var(--bg-raised); }
+.surface-overlay { background: var(--bg-overlay); }
+
+/* Border utilities */
+.border-subtle  { border: 1px solid var(--border-subtle); }
+.border-default { border: 1px solid var(--border-default); }
+.border-strong  { border: 1px solid var(--border-strong); }
+
+/* Radius utilities */
+.radius-sm   { border-radius: var(--radius-sm); }
+.radius-md   { border-radius: var(--radius-md); }
+.radius-lg   { border-radius: var(--radius-lg); }
+.radius-xl   { border-radius: var(--radius-xl); }
+.radius-full { border-radius: var(--radius-full); }

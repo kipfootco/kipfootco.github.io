@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colors — Accents</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: var(--bg-base); padding: 20px; font-family: var(--font-body); }
+  .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .swatch { border-radius: var(--radius-md); overflow: hidden; }
+  .color-block { height: 80px; border: 1px solid rgba(255,255,255,0.06); position: relative; }
+  .label { padding: 8px; }
+  .name { font-size: 11px; font-weight: 500; color: var(--fg-1); font-family: var(--font-mono); }
+  .hex  { font-size: 10px; color: var(--fg-3); font-family: var(--font-mono); margin-top: 2px; }
+  .token{ font-size: 9px; color: var(--fg-3); font-family: var(--font-mono); margin-top: 1px; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); text-transform: uppercase; margin-bottom: 8px; font-family: var(--font-body); }
+  .usage { font-size: 9px; color: var(--fg-3); margin-top: 3px; }
+</style>
+</head>
+<body>
+<div class="section-label">Brand Accents</div>
+<div class="grid">
+  <div class="swatch">
+    <div class="color-block" style="background:#ff6b35; box-shadow: 0 0 20px rgba(255,107,53,0.3)"></div>
+    <div class="label"><div class="name">orange</div><div class="hex">#ff6b35</div><div class="token">--accent-orange</div><div class="usage">Primary CTA, brand</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#ffb347"></div>
+    <div class="label"><div class="name">amber</div><div class="hex">#ffb347</div><div class="token">--accent-amber</div><div class="usage">Warm highlight</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#4ade80"></div>
+    <div class="label"><div class="name">green</div><div class="hex">#4ade80</div><div class="token">--accent-green</div><div class="usage">Success, positive</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#22d3ee"></div>
+    <div class="label"><div class="name">cyan</div><div class="hex">#22d3ee</div><div class="token">--accent-cyan</div><div class="usage">Info, interactive</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#a78bfa"></div>
+    <div class="label"><div class="name">purple</div><div class="hex">#a78bfa</div><div class="token">--accent-purple</div><div class="usage">Learning layer</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#f87171"></div>
+    <div class="label"><div class="name">red</div><div class="hex">#f87171</div><div class="token">--accent-red</div><div class="usage">Error, exceeded</div></div>
+  </div>
+</div>
+
+<div class="section-label" style="margin-top:20px">Category Colors (Tool Cards)</div>
+<div class="grid">
+  <div class="swatch">
+    <div class="color-block" style="background:#ff6b35"></div>
+    <div class="label"><div class="name">Structural</div><div class="hex">#ff6b35</div><div class="token">--cat-structural</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#ffb347"></div>
+    <div class="label"><div class="name">Geotechnical</div><div class="hex">#ffb347</div><div class="token">--cat-geotechnical</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#22d3ee"></div>
+    <div class="label"><div class="name">Hydraulic</div><div class="hex">#22d3ee</div><div class="token">--cat-hydraulic</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#a78bfa"></div>
+    <div class="label"><div class="name">Electrical</div><div class="hex">#a78bfa</div><div class="token">--cat-electrical</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#4ade80"></div>
+    <div class="label"><div class="name">Mechanical</div><div class="hex">#4ade80</div><div class="token">--cat-mechanical</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#67e8f9"></div>
+    <div class="label"><div class="name">Wind</div><div class="hex">#67e8f9</div><div class="token">--cat-wind</div></div>
+  </div>
+</div>
+</body>
+</html>

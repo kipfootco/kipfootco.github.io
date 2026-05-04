@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radius + Shadow</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: var(--bg-base); padding: 20px 24px; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); text-transform: uppercase; margin-bottom: 12px; font-family: var(--font-body); }
+  .radius-grid { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+  .r-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .r-box { width: 56px; height: 56px; background: var(--bg-overlay); border: 1px solid var(--border-default); }
+  .r-label { font-family: var(--font-mono); font-size: 9px; color: var(--fg-3); text-align: center; line-height: 1.4; }
+  .shadow-grid { display: flex; gap: 20px; flex-wrap: wrap; }
+  .s-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .s-box { width: 80px; height: 56px; background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); }
+  .s-label { font-family: var(--font-mono); font-size: 9px; color: var(--fg-3); text-align: center; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="section-label">Corner Radii</div>
+<div class="radius-grid">
+  <div class="r-item">
+    <div class="r-box" style="border-radius:0px"></div>
+    <div class="r-label">0px<br>—</div>
+  </div>
+  <div class="r-item">
+    <div class="r-box" style="border-radius:4px"></div>
+    <div class="r-label">4px<br>--radius-sm<br>chips, tags</div>
+  </div>
+  <div class="r-item">
+    <div class="r-box" style="border-radius:8px"></div>
+    <div class="r-label">8px<br>--radius-md<br>buttons, inputs</div>
+  </div>
+  <div class="r-item">
+    <div class="r-box" style="border-radius:12px"></div>
+    <div class="r-label">12px<br>--radius-lg<br>cards</div>
+  </div>
+  <div class="r-item">
+    <div class="r-box" style="border-radius:16px"></div>
+    <div class="r-label">16px<br>--radius-xl<br>hero cards</div>
+  </div>
+  <div class="r-item">
+    <div class="r-box" style="border-radius:24px"></div>
+    <div class="r-label">24px<br>--radius-2xl<br>large panels</div>
+  </div>
+  <div class="r-item">
+    <div class="r-box" style="border-radius:9999px"></div>
+    <div class="r-label">9999px<br>--radius-full<br>pills only</div>
+  </div>
+</div>
+
+<div class="section-label">Shadow / Elevation</div>
+<div class="shadow-grid">
+  <div class="s-item">
+    <div class="s-box" style="box-shadow:none; background: var(--bg-overlay)"></div>
+    <div class="s-label">Level 0<br>no shadow<br>flat elements</div>
+  </div>
+  <div class="s-item">
+    <div class="s-box" style="box-shadow:0 1px 3px rgba(0,0,0,0.4)"></div>
+    <div class="s-label">Level 1<br>--shadow-1<br>subtle card lift</div>
+  </div>
+  <div class="s-item">
+    <div class="s-box" style="box-shadow:0 4px 16px rgba(0,0,0,0.5)"></div>
+    <div class="s-label">Level 2<br>--shadow-2<br>modals, popovers</div>
+  </div>
+  <div class="s-item">
+    <div class="s-box" style="box-shadow:0 8px 32px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.06)"></div>
+    <div class="s-label">Level 3<br>--shadow-3<br>floating panels</div>
+  </div>
+  <div class="s-item">
+    <div class="s-box" style="box-shadow:0 0 24px rgba(255,107,53,0.2); border-color:rgba(255,107,53,0.3)"></div>
+    <div class="s-label">Glow Orange<br>--shadow-glow<br>primary CTA</div>
+  </div>
+  <div class="s-item">
+    <div class="s-box" style="box-shadow:0 0 24px rgba(34,211,238,0.15); border-color:rgba(34,211,238,0.3)"></div>
+    <div class="s-label">Glow Cyan<br>--shadow-glow<br>active states</div>
+  </div>
+</div>
+</body>
+</html>

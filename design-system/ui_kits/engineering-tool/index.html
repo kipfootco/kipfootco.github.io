@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kipfoot — Beam Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg-base:#0c0c0f; --bg-surface:#141418; --bg-raised:#1c1c22; --bg-overlay:#242430;
+  --fg-1:#f0f0f4; --fg-2:#a0a0b0; --fg-3:#606070;
+  --accent-orange:#ff6b35; --accent-green:#4ade80; --accent-amber:#ffb347; --accent-red:#f87171; --accent-cyan:#22d3ee; --accent-purple:#a78bfa;
+  --border-subtle:rgba(255,255,255,0.06); --border-default:rgba(255,255,255,0.10); --border-strong:rgba(255,255,255,0.18);
+  --font-display:'DM Sans',system-ui,sans-serif; --font-body:'IBM Plex Sans',system-ui,sans-serif; --font-mono:'IBM Plex Mono',monospace;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+html { -webkit-font-smoothing:antialiased; }
+body { background:var(--bg-base); color:var(--fg-1); font-family:var(--font-body); font-size:15px; line-height:1.5; display:flex; flex-direction:column; min-height:100vh; }
+
+/* NAV */
+.nav { height:56px; background:rgba(12,12,15,0.85); backdrop-filter:blur(12px); border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; padding:0 24px; gap:0; flex-shrink:0; position:sticky; top:0; z-index:100; }
+.nav-logo { display:flex; align-items:center; gap:9px; text-decoration:none; margin-right:24px; }
+.logo-text { font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--fg-1); letter-spacing:-0.02em; }
+.breadcrumb { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--fg-3); }
+.breadcrumb a { color:var(--fg-3); text-decoration:none; } .breadcrumb a:hover { color:var(--fg-2); }
+.breadcrumb-sep { color:var(--fg-3); opacity:0.5; }
+.breadcrumb-current { color:var(--fg-2); font-weight:500; }
+.nav-right { margin-left:auto; display:flex; gap:8px; align-items:center; }
+.btn { display:inline-flex; align-items:center; gap:6px; font-family:var(--font-body); font-size:13px; font-weight:500; border-radius:7px; border:1px solid transparent; cursor:pointer; transition:all 120ms var(--ease); text-decoration:none; white-space:nowrap; }
+.btn-sm { height:30px; padding:0 12px; }
+.btn-md { height:36px; padding:0 14px; font-size:13px; }
+.btn-ghost { background:transparent; color:var(--fg-2); } .btn-ghost:hover { color:var(--fg-1); background:rgba(255,255,255,0.05); }
+.btn-secondary { background:var(--bg-overlay); color:var(--fg-1); border-color:var(--border-default); } .btn-secondary:hover { border-color:var(--border-strong); }
+.btn-primary { background:var(--accent-orange); color:#0c0c0f; border-color:var(--accent-orange); box-shadow:0 0 16px rgba(255,107,53,0.2); } .btn-primary:hover { background:#e85a24; }
+.btn-primary:active { transform:scale(0.98); }
+
+/* TOOL HEADER */
+.tool-header { padding:20px 24px 0; display:flex; align-items:flex-start; justify-content:space-between; gap:16px; max-width:1400px; margin:0 auto; width:100%; }
+.tool-meta { flex:1; }
+.tool-title-row { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+.tool-title { font-family:var(--font-display); font-size:24px; font-weight:700; color:var(--fg-1); letter-spacing:-0.02em; }
+.tool-tag { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:3px 8px; border-radius:4px; background:rgba(255,107,53,0.15); color:#ff6b35; }
+.tool-desc { font-size:13px; color:var(--fg-3); }
+.tool-actions { display:flex; gap:8px; align-items:center; padding-top:4px; }
+
+/* LAYOUT */
+.tool-layout { display:flex; gap:0; flex:1; max-width:1400px; margin:0 auto; width:100%; padding:20px 24px; gap:16px; }
+
+/* INPUT PANEL */
+.input-panel { width:280px; flex-shrink:0; display:flex; flex-direction:column; gap:12px; }
+.panel-card { background:var(--bg-surface); border:1px solid var(--border-default); border-radius:12px; overflow:hidden; }
+.panel-header { padding:12px 14px; border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; justify-content:space-between; }
+.panel-label { font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--fg-3); }
+.panel-body { padding:14px; display:flex; flex-direction:column; gap:12px; }
+.field { display:flex; flex-direction:column; gap:5px; }
+.field-label { font-size:12px; font-weight:500; color:var(--fg-2); display:flex; align-items:center; justify-content:space-between; }
+.field-hint { font-size:11px; color:var(--fg-3); }
+.input-wrap { position:relative; }
+input[type=text], input[type=number], select {
+  width:100%; height:34px; background:var(--bg-raised); border:1px solid var(--border-default);
+  border-radius:7px; color:var(--fg-1); font-family:var(--font-body); font-size:13px;
+  padding:0 36px 0 11px; outline:none; transition:border-color 120ms, box-shadow 120ms; -webkit-appearance:none;
+}
+input:focus, select:focus { border-color:var(--accent-orange); box-shadow:0 0 0 3px rgba(255,107,53,0.10); }
+input::placeholder { color:var(--fg-3); }
+.input-unit { position:absolute; right:10px; top:50%; transform:translateY(-50%); font-family:var(--font-mono); font-size:11px; color:var(--fg-3); pointer-events:none; }
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.select-wrap { position:relative; }
+.select-wrap select { padding-right:28px; cursor:pointer; }
+.select-arrow { position:absolute; right:10px; top:50%; transform:translateY(-50%); pointer-events:none; color:var(--fg-3); }
+
+/* Support type toggle */
+.toggle-group { display:flex; gap:4px; }
+.toggle-btn { flex:1; height:30px; background:var(--bg-raised); border:1px solid var(--border-default); border-radius:6px; font-family:var(--font-body); font-size:12px; font-weight:500; color:var(--fg-2); cursor:pointer; transition:all 120ms; }
+.toggle-btn.active { background:rgba(255,107,53,0.15); border-color:rgba(255,107,53,0.3); color:var(--accent-orange); }
+.toggle-btn:hover:not(.active) { border-color:var(--border-strong); color:var(--fg-1); }
+
+/* Run button full width */
+.btn-run { width:100%; height:40px; font-size:14px; border-radius:9px; justify-content:center; }
+
+/* RIGHT PANEL */
+.right-panel { flex:1; display:flex; flex-direction:column; gap:14px; min-width:0; }
+
+/* KPI GRID */
+.kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.kpi-card { background:var(--bg-surface); border:1px solid var(--border-default); border-radius:10px; padding:14px; }
+.kpi-label { font-size:11px; font-weight:500; color:var(--fg-3); letter-spacing:0.03em; margin-bottom:6px; }
+.kpi-value { font-family:var(--font-mono); font-size:24px; font-weight:600; color:var(--fg-1); line-height:1; letter-spacing:-0.02em; }
+.kpi-unit { font-family:var(--font-mono); font-size:12px; color:var(--fg-3); margin-left:3px; font-weight:400; }
+.kpi-bar { margin-top:10px; height:3px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden; }
+.kpi-bar-fill { height:100%; border-radius:2px; }
+.kpi-delta { font-size:11px; margin-top:6px; font-family:var(--font-mono); }
+
+/* DIAGRAM */
+.diagram-card { background:var(--bg-surface); border:1px solid var(--border-default); border-radius:12px; overflow:hidden; }
+.diagram-header { padding:12px 16px; border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; gap:10px; }
+.diagram-title { font-size:13px; font-weight:600; color:var(--fg-2); }
+.diagram-tabs { display:flex; gap:2px; margin-left:auto; }
+.dtab { font-size:12px; font-weight:500; color:var(--fg-3); padding:4px 10px; border-radius:5px; cursor:pointer; transition:all 120ms; }
+.dtab.active { background:rgba(255,255,255,0.08); color:var(--fg-1); }
+.dtab:hover:not(.active) { color:var(--fg-2); background:rgba(255,255,255,0.04); }
+.diagram-body { padding:20px; }
+
+/* RESULTS TABLE */
+.results-table { width:100%; border-collapse:collapse; font-size:13px; }
+.results-table th { text-align:left; font-size:10px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--fg-3); padding:0 12px 10px; border-bottom:1px solid var(--border-subtle); }
+.results-table td { padding:10px 12px; border-bottom:1px solid var(--border-subtle); vertical-align:middle; }
+.results-table tr:last-child td { border-bottom:none; }
+.results-table tr:hover td { background:rgba(255,255,255,0.02); }
+.mono { font-family:var(--font-mono); }
+.status-dot { width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:5px; }
+
+/* EXPANDABLE */
+.expandable { background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:10px; overflow:hidden; margin-bottom:6px; }
+.exp-header { display:flex; align-items:center; gap:10px; padding:11px 14px; cursor:pointer; transition:background 120ms; user-select:none; }
+.exp-header:hover { background:rgba(255,255,255,0.03); }
+.exp-icon { width:16px; height:16px; flex-shrink:0; }
+.exp-label { font-size:13px; font-weight:500; color:var(--fg-1); flex:1; }
+.exp-type { font-size:10px; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; padding:2px 7px; border-radius:3px; }
+.exp-chevron { transition:transform 220ms var(--ease); color:var(--fg-3); flex-shrink:0; }
+.exp-chevron.open { transform:rotate(180deg); }
+.exp-body { overflow:hidden; max-height:0; transition:max-height 300ms var(--ease); }
+.exp-body.open { max-height:500px; }
+.exp-content { padding:0 14px 14px; border-top:1px solid var(--border-subtle); }
+.exp-content p { font-size:13px; color:var(--fg-2); line-height:1.65; margin-top:12px; }
+.exp-content .eq { font-family:var(--font-mono); font-size:12px; background:var(--bg-raised); color:var(--accent-green); padding:10px 12px; border-radius:6px; margin:10px 0; border:1px solid var(--border-subtle); line-height:1.7; }
+.exp-content .eq .dim { color:var(--fg-3); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="../homepage/index.html">
+    <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="3.5" height="24" rx="1.5" fill="#ff6b35"/><line x1="7.5" y1="16" x2="21" y2="7" stroke="#ff6b35" stroke-width="3.5" stroke-linecap="round"/><line x1="7.5" y1="16" x2="21" y2="25" stroke="#ff6b35" stroke-width="3.5" stroke-linecap="round"/></svg>
+    <span class="logo-text">kipfoot</span>
+  </a>
+  <div class="breadcrumb">
+    <a href="../tool-library/index.html">Library</a>
+    <span class="breadcrumb-sep">/</span>
+    <span style="color:var(--fg-3)">Structural</span>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">Beam Analysis</span>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-sm btn-ghost">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
+      New
+    </button>
+    <button class="btn btn-sm btn-secondary">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 8h10M8 4l4 4-4 4"/></svg>
+      Export PDF
+    </button>
+  </div>
+</nav>
+
+<!-- TOOL HEADER -->
+<div class="tool-header">
+  <div class="tool-meta">
+    <div class="tool-title-row">
+      <h1 class="tool-title">Beam Analysis</h1>
+      <span class="tool-tag">Structural</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--fg-3);margin-left:4px">v2.1</span>
+    </div>
+    <div class="tool-desc">Bending moment, shear, and deflection for simply supported and continuous beams. AISC 360 / ACI 318.</div>
+  </div>
+  <div class="tool-actions">
+    <button class="btn btn-md btn-primary btn-run" style="width:auto" onclick="runAnalysis()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polygon points="5,3 13,8 5,13" fill="currentColor" stroke="none"/></svg>
+      Run Analysis
+    </button>
+  </div>
+</div>
+
+<!-- TOOL LAYOUT -->
+<div class="tool-layout">
+
+  <!-- INPUT PANEL -->
+  <aside class="input-panel">
+
+    <!-- Geometry -->
+    <div class="panel-card">
+      <div class="panel-header">
+        <span class="panel-label">Geometry</span>
+      </div>
+      <div class="panel-body">
+        <div class="field">
+          <div class="field-label">Support Condition</div>
+          <div class="toggle-group">
+            <button class="toggle-btn active" onclick="setSupport(this,'simply')">Simply Supported</button>
+            <button class="toggle-btn" onclick="setSupport(this,'cantilever')">Cantilever</button>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Span Length <span class="field-hint">clear span</span></div>
+          <div class="input-wrap">
+            <input type="number" id="span" value="24" step="0.5">
+            <span class="input-unit">ft</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="panel-card">
+      <div class="panel-header">
+        <span class="panel-label">Loading</span>
+      </div>
+      <div class="panel-body">
+        <div class="field">
+          <div class="field-label">Load Type</div>
+          <div class="select-wrap">
+            <select id="loadType" onchange="updateLoadUI()">
+              <option value="udl">Uniform (UDL)</option>
+              <option value="point">Point Load at Midspan</option>
+              <option value="both">UDL + Point Load</option>
+            </select>
+            <svg class="select-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5l3 3 3-3"/></svg>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <div class="field-label">Dead Load</div>
+            <div class="input-wrap">
+              <input type="number" id="dl" value="1.5" step="0.1">
+              <span class="input-unit">k/ft</span>
+            </div>
+          </div>
+          <div class="field">
+            <div class="field-label">Live Load</div>
+            <div class="input-wrap">
+              <input type="number" id="ll" value="2.0" step="0.1">
+              <span class="input-unit">k/ft</span>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Load Combo</div>
+          <div class="select-wrap">
+            <select>
+              <option>LRFD: 1.2D + 1.6L</option>
+              <option>ASD: D + L</option>
+              <option>1.4D</option>
+            </select>
+            <svg class="select-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5l3 3 3-3"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section -->
+    <div class="panel-card">
+      <div class="panel-header">
+        <span class="panel-label">Section</span>
+      </div>
+      <div class="panel-body">
+        <div class="field">
+          <div class="field-label">Material</div>
+          <div class="select-wrap">
+            <select>
+              <option>A992 Steel (Fy = 50 ksi)</option>
+              <option>A36 Steel (Fy = 36 ksi)</option>
+              <option>A500 HSS</option>
+            </select>
+            <svg class="select-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5l3 3 3-3"/></svg>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">W-Shape</div>
+          <div class="select-wrap">
+            <select id="section" onchange="compute()">
+              <option value="W18x97">W18×97</option>
+              <option value="W21x68">W21×68</option>
+              <option value="W24x55">W24×55</option>
+              <option value="W18x46">W18×46</option>
+              <option value="W16x31">W16×31</option>
+            </select>
+            <svg class="select-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5l3 3 3-3"/></svg>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <div class="field-label">Ix <span class="field-hint">auto</span></div>
+            <div class="input-wrap">
+              <input type="text" id="ix" value="1750" readonly style="color:var(--fg-3)">
+              <span class="input-unit">in⁴</span>
+            </div>
+          </div>
+          <div class="field">
+            <div class="field-label">Sx <span class="field-hint">auto</span></div>
+            <div class="input-wrap">
+              <input type="text" id="sx" value="188" readonly style="color:var(--fg-3)">
+              <span class="input-unit">in³</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-run" onclick="runAnalysis()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><polygon points="5,3 13,8 5,13" fill="currentColor"/></svg>
+      Run Analysis
+    </button>
+
+  </aside>
+
+  <!-- RIGHT: RESULTS + DIAGRAM -->
+  <div class="right-panel">
+
+    <!-- KPI CARDS -->
+    <div class="kpi-grid" id="kpiGrid">
+      <div class="kpi-card">
+        <div class="kpi-label">Max Moment Mu</div>
+        <div><span class="kpi-value" id="kpi-moment">284.5</span><span class="kpi-unit">kip·ft</span></div>
+        <div class="kpi-delta" id="kpi-moment-delta" style="color:#4ade80">↓ 22% below ϕMn</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" id="kpi-moment-bar" style="width:78%;background:#4ade80"></div></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Max Shear Vu</div>
+        <div><span class="kpi-value" id="kpi-shear">57.0</span><span class="kpi-unit">kips</span></div>
+        <div class="kpi-delta" id="kpi-shear-delta" style="color:#4ade80">↓ 41% below ϕVn</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" id="kpi-shear-bar" style="width:59%;background:#4ade80"></div></div>
+      </div>
+      <div class="kpi-card" id="kpi-defl-card">
+        <div class="kpi-label">Live Load Deflection</div>
+        <div><span class="kpi-value" id="kpi-defl" style="color:#ffb347">0.89</span><span class="kpi-unit">in</span></div>
+        <div class="kpi-delta" id="kpi-defl-delta" style="color:#ffb347">↑ 89% of L/360 limit</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" id="kpi-defl-bar" style="width:89%;background:#ffb347"></div></div>
+      </div>
+      <div class="kpi-card" id="kpi-dc-card">
+        <div class="kpi-label">D/C Ratio (Moment)</div>
+        <div><span class="kpi-value" id="kpi-dc">0.78</span></div>
+        <div class="kpi-delta" id="kpi-dc-delta" style="color:#4ade80">↓ Capacity OK</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" id="kpi-dc-bar" style="width:78%;background:#4ade80"></div></div>
+      </div>
+    </div>
+
+    <!-- DIAGRAM -->
+    <div class="diagram-card">
+      <div class="diagram-header">
+        <span class="diagram-title">Diagrams</span>
+        <div class="diagram-tabs">
+          <div class="dtab active" onclick="setDiagram(this,'beam')">Beam</div>
+          <div class="dtab" onclick="setDiagram(this,'moment')">Moment</div>
+          <div class="dtab" onclick="setDiagram(this,'shear')">Shear</div>
+          <div class="dtab" onclick="setDiagram(this,'deflection')">Deflection</div>
+        </div>
+      </div>
+      <div class="diagram-body" id="diagramBody">
+        <!-- Beam diagram SVG -->
+        <svg id="beamSvg" width="100%" height="140" viewBox="0 0 600 140">
+          <!-- ground hatching left -->
+          <line x1="60" y1="100" x2="60" y2="110" stroke="#606070" stroke-width="1.5"/>
+          <line x1="40" y1="110" x2="80" y2="110" stroke="#606070" stroke-width="1.5"/>
+          <line x1="38" y1="112" x2="48" y2="122" stroke="#606070" stroke-width="1"/>
+          <line x1="50" y1="112" x2="60" y2="122" stroke="#606070" stroke-width="1"/>
+          <line x1="62" y1="112" x2="72" y2="122" stroke="#606070" stroke-width="1"/>
+          <!-- ground hatching right -->
+          <line x1="540" y1="100" x2="540" y2="110" stroke="#606070" stroke-width="1.5"/>
+          <line x1="520" y1="110" x2="560" y2="110" stroke="#606070" stroke-width="1.5"/>
+          <line x1="518" y1="112" x2="528" y2="122" stroke="#606070" stroke-width="1"/>
+          <line x1="530" y1="112" x2="540" y2="122" stroke="#606070" stroke-width="1"/>
+          <line x1="542" y1="112" x2="552" y2="122" stroke="#606070" stroke-width="1"/>
+          <!-- beam -->
+          <rect x="60" y="92" width="480" height="8" rx="2" fill="#ff6b35" opacity="0.7"/>
+          <!-- UDL arrows -->
+          <g id="udlArrows" opacity="0.7">
+            <defs>
+              <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                <polygon points="0,0 6,3 0,6" fill="#ff6b35" opacity="0.8"/>
+              </marker>
+            </defs>
+            <line x1="100" y1="30" x2="100" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+            <line x1="150" y1="30" x2="150" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+            <line x1="200" y1="30" x2="200" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+            <line x1="250" y1="30" x2="250" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+            <line x1="300" y1="30" x2="300" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+            <line x1="350" y1="30" x2="350" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+            <line x1="400" y1="30" x2="400" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+            <line x1="450" y1="30" x2="450" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+            <line x1="500" y1="30" x2="500" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+            <line x1="60" y1="28" x2="540" y2="28" stroke="#ff6b35" stroke-width="1.2"/>
+          </g>
+          <!-- Labels -->
+          <text x="300" y="18" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#ff6b35" opacity="0.8">wu = 5.60 k/ft</text>
+          <text x="60" y="138" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#606070">A</text>
+          <text x="540" y="138" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#606070">B</text>
+          <text x="300" y="138" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#a0a0b0">L = 24.0 ft</text>
+          <!-- Reaction arrows up -->
+          <line x1="60" y1="100" x2="60" y2="118" stroke="#22d3ee" stroke-width="1.5"/>
+          <text x="60" y="130" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#22d3ee">57.0 k</text>
+          <line x1="540" y1="100" x2="540" y2="118" stroke="#22d3ee" stroke-width="1.5"/>
+          <text x="540" y="130" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#22d3ee">57.0 k</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- RESULTS TABLE -->
+    <div class="panel-card">
+      <div class="panel-header"><span class="panel-label">Limit State Summary</span></div>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Limit State</th>
+            <th>Demand</th>
+            <th>Capacity (ϕR)</th>
+            <th>D/C</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody">
+          <tr>
+            <td>Flexure (Mn)</td>
+            <td class="mono">284.5 kip·ft</td>
+            <td class="mono">367.5 kip·ft</td>
+            <td class="mono">0.77</td>
+            <td><span class="status-dot" style="background:#4ade80"></span><span style="color:#4ade80;font-size:12px">OK</span></td>
+          </tr>
+          <tr>
+            <td>Shear (Vn)</td>
+            <td class="mono">57.0 kips</td>
+            <td class="mono">232.8 kips</td>
+            <td class="mono">0.24</td>
+            <td><span class="status-dot" style="background:#4ade80"></span><span style="color:#4ade80;font-size:12px">OK</span></td>
+          </tr>
+          <tr>
+            <td>Deflection (L/360)</td>
+            <td class="mono">0.89 in</td>
+            <td class="mono">0.80 in</td>
+            <td class="mono" style="color:#ffb347">1.11</td>
+            <td><span class="status-dot" style="background:#ffb347"></span><span style="color:#ffb347;font-size:12px">Near Limit</span></td>
+          </tr>
+          <tr>
+            <td>Web Local Buckling</td>
+            <td class="mono">—</td>
+            <td class="mono">Compact</td>
+            <td class="mono">—</td>
+            <td><span class="status-dot" style="background:#4ade80"></span><span style="color:#4ade80;font-size:12px">OK</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- EXPANDABLE EXPLANATIONS -->
+    <div>
+      <div class="expandable">
+        <div class="exp-header" onclick="toggleExp(this)">
+          <svg class="exp-icon" viewBox="0 0 16 16" fill="none" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5.5v.5"/></svg>
+          <span class="exp-label">Why deflection controls this design</span>
+          <span class="exp-type" style="background:rgba(167,139,250,0.12);color:#a78bfa">Learn</span>
+          <svg class="exp-chevron open" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5l4 4 4-4"/></svg>
+        </div>
+        <div class="exp-body open">
+          <div class="exp-content">
+            <p>For longer spans with lighter loads, serviceability (deflection) often governs over strength. At L = 24 ft, the L/360 limit for live load deflection is 0.80 in. The computed δ = 0.89 in exceeds this by 11%.</p>
+            <p>Options: increase Ix by upsizing to W21×68 (Ix = 1,600 in⁴), reduce the live load, or increase the span depth ratio. The W18×97 provides adequate strength but insufficient stiffness at this span.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="exp-header" onclick="toggleExp(this)">
+          <svg class="exp-icon" viewBox="0 0 16 16" fill="none" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round"><path d="M3 8h10M3 5l3 3-3 3"/></svg>
+          <span class="exp-label">Flexure calculation trace</span>
+          <span class="exp-type" style="background:rgba(74,222,128,0.10);color:#4ade80">Equation</span>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5l4 4 4-4"/></svg>
+        </div>
+        <div class="exp-body">
+          <div class="exp-content">
+            <div class="eq">
+              wu = 1.2D + 1.6L = 1.2(1.5) + 1.6(2.0) = <strong>5.60 k/ft</strong><br>
+              <span class="dim">Mu = wu·L² / 8</span><br>
+              Mu = 5.60 × 24² / 8 = <strong>403.2 kip·ft</strong> <span class="dim">(factored)</span><br>
+              ϕMn = 0.90 × Fy × Zx = 0.90 × 50 × 211 / 12 = <strong>791.3 kip·ft</strong><br>
+              D/C = 403.2 / 791.3 = <strong>0.51</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="exp-header" onclick="toggleExp(this)">
+          <svg class="exp-icon" viewBox="0 0 16 16" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="10" height="10" rx="1.5"/><path d="M6 8h4M8 6v4"/></svg>
+          <span class="exp-label">Assumptions &amp; code references</span>
+          <span class="exp-type" style="background:rgba(34,211,238,0.10);color:#22d3ee">Assumptions</span>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5l4 4 4-4"/></svg>
+        </div>
+        <div class="exp-body">
+          <div class="exp-content">
+            <p>• Fully braced compression flange (Lb = 0) — no LTB reduction applied<br>
+            • Compact section: λf &lt; λpf, λw &lt; λpw (checked automatically)<br>
+            • Deflection per AISC Design Guide 3, L/360 for live load<br>
+            • Reactions are equal (symmetric loading)<br>
+            • AISC 360-22 Chapter F (flexure), Chapter G (shear)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Section properties lookup
+const sections = {
+  'W18x97': { Ix: 1750, Sx: 188, Zx: 211, phis_Vn: 232.8 },
+  'W21x68': { Ix: 1600, Sx: 160, Zx: 160, phis_Vn: 196.5 },
+  'W24x55': { Ix: 1350, Sx: 114, Zx: 134, phis_Vn: 159.8 },
+  'W18x46': { Ix: 712,  Sx: 78,  Zx: 90,  phis_Vn: 114.5 },
+  'W16x31': { Ix: 375,  Sx: 47,  Zx: 54,  phis_Vn: 78.2  }
+};
+
+function compute() {
+  const L  = parseFloat(document.getElementById('span').value) || 24;
+  const DL = parseFloat(document.getElementById('dl').value)   || 1.5;
+  const LL = parseFloat(document.getElementById('ll').value)   || 2.0;
+  const sec = document.getElementById('section').value;
+  const props = sections[sec];
+
+  // Update displayed properties
+  document.getElementById('ix').value = props.Ix;
+  document.getElementById('sx').value = props.Sx;
+
+  const wu = 1.2 * DL + 1.6 * LL;
+  const Mu = wu * L * L / 8;              // kip-ft
+  const Vu = wu * L / 2;                  // kips
+  const phiMn = 0.90 * 50 * props.Zx / 12; // kip-ft (Fy=50)
+  const phiVn = props.phis_Vn;
+  const defl  = (5 * LL * Math.pow(L * 12, 4)) / (384 * 29000 * props.Ix); // inches
+  const deflLimit = (L * 12) / 360;
+  const dcMoment = Mu / phiMn;
+  const dcDefl   = defl / deflLimit;
+
+  // Update KPIs
+  setKPI('kpi-moment', Mu.toFixed(1), 'kip-moment-delta', 'kpi-moment-bar', dcMoment, 'below ϕMn', 'above ϕMn');
+  setKPI('kpi-shear',  Vu.toFixed(1), 'kpi-shear-delta',  'kpi-shear-bar',  Vu/phiVn, 'below ϕVn', 'above ϕVn');
+  setKPI('kpi-defl',   defl.toFixed(2),'kpi-defl-delta',  'kpi-defl-bar',   dcDefl,   'of L/360 limit','of L/360 limit');
+  setKPI('kpi-dc',     dcMoment.toFixed(2), 'kpi-dc-delta', 'kpi-dc-bar', dcMoment, 'Capacity OK', 'EXCEEDS capacity');
+
+  // Results table
+  document.getElementById('resultsBody').innerHTML = `
+    <tr>
+      <td>Flexure (Mn)</td>
+      <td class="mono">${Mu.toFixed(1)} kip·ft</td>
+      <td class="mono">${phiMn.toFixed(1)} kip·ft</td>
+      <td class="mono" ${dcMoment>1?'style="color:#f87171"':''}>${dcMoment.toFixed(2)}</td>
+      <td>${statusBadge(dcMoment)}</td>
+    </tr>
+    <tr>
+      <td>Shear (Vn)</td>
+      <td class="mono">${Vu.toFixed(1)} kips</td>
+      <td class="mono">${phiVn.toFixed(1)} kips</td>
+      <td class="mono">${(Vu/phiVn).toFixed(2)}</td>
+      <td>${statusBadge(Vu/phiVn)}</td>
+    </tr>
+    <tr>
+      <td>Deflection (L/360)</td>
+      <td class="mono">${defl.toFixed(2)} in</td>
+      <td class="mono">${deflLimit.toFixed(2)} in</td>
+      <td class="mono" ${dcDefl>1?'style="color:#f87171"':dcDefl>0.85?'style="color:#ffb347"':''}>${dcDefl.toFixed(2)}</td>
+      <td>${statusBadge(dcDefl)}</td>
+    </tr>
+    <tr>
+      <td>Web Local Buckling</td>
+      <td class="mono">—</td><td class="mono">Compact</td><td class="mono">—</td>
+      <td><span class="status-dot" style="background:#4ade80"></span><span style="color:#4ade80;font-size:12px">OK</span></td>
+    </tr>`;
+}
+
+function setKPI(valId, val, deltaId, barId, dc, okLabel, failLabel) {
+  const color = dc > 1 ? '#f87171' : dc > 0.9 ? '#ffb347' : '#4ade80';
+  const arrow = dc > 1 ? '↑' : '↓';
+  const pct = Math.round(Math.abs(1 - dc) * 100);
+  document.getElementById(valId).textContent = val;
+  document.getElementById(valId).style.color = dc > 0.9 ? color : 'var(--fg-1)';
+  if (document.getElementById(deltaId)) {
+    document.getElementById(deltaId).textContent = dc > 1
+      ? `${arrow} ${pct}% ${failLabel}`
+      : `${arrow} ${pct}% ${okLabel}`;
+    document.getElementById(deltaId).style.color = color;
+  }
+  if (document.getElementById(barId)) {
+    document.getElementById(barId).style.width = Math.min(dc * 100, 100) + '%';
+    document.getElementById(barId).style.background = color;
+  }
+}
+
+function statusBadge(dc) {
+  if (dc > 1)    return `<span class="status-dot" style="background:#f87171"></span><span style="color:#f87171;font-size:12px">Exceeded</span>`;
+  if (dc > 0.9)  return `<span class="status-dot" style="background:#ffb347"></span><span style="color:#ffb347;font-size:12px">Near Limit</span>`;
+  return `<span class="status-dot" style="background:#4ade80"></span><span style="color:#4ade80;font-size:12px">OK</span>`;
+}
+
+function runAnalysis() {
+  compute();
+  const btn = event.currentTarget;
+  btn.textContent = 'Calculating…';
+  setTimeout(() => {
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><polygon points="5,3 13,8 5,13" fill="currentColor"/></svg> Run Analysis';
+  }, 600);
+}
+
+function setSupport(el, type) {
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setDiagram(el, type) {
+  document.querySelectorAll('.dtab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderDiagram(type);
+}
+
+function renderDiagram(type) {
+  const body = document.getElementById('diagramBody');
+  const diagrams = {
+    beam: `<svg width="100%" height="140" viewBox="0 0 600 140">
+      <line x1="60" y1="100" x2="60" y2="110" stroke="#606070" stroke-width="1.5"/>
+      <line x1="40" y1="110" x2="80" y2="110" stroke="#606070" stroke-width="1.5"/>
+      <line x1="38" y1="112" x2="48" y2="122" stroke="#606070" stroke-width="1"/><line x1="50" y1="112" x2="60" y2="122" stroke="#606070" stroke-width="1"/><line x1="62" y1="112" x2="72" y2="122" stroke="#606070" stroke-width="1"/>
+      <line x1="540" y1="100" x2="540" y2="110" stroke="#606070" stroke-width="1.5"/>
+      <line x1="520" y1="110" x2="560" y2="110" stroke="#606070" stroke-width="1.5"/>
+      <line x1="518" y1="112" x2="528" y2="122" stroke="#606070" stroke-width="1"/><line x1="530" y1="112" x2="540" y2="122" stroke="#606070" stroke-width="1"/><line x1="542" y1="112" x2="552" y2="122" stroke="#606070" stroke-width="1"/>
+      <rect x="60" y="92" width="480" height="8" rx="2" fill="#ff6b35" opacity="0.7"/>
+      <line x1="100" y1="30" x2="100" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="150" y1="30" x2="150" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="200" y1="30" x2="200" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="250" y1="30" x2="250" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="300" y1="30" x2="300" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="350" y1="30" x2="350" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="400" y1="30" x2="400" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="450" y1="30" x2="450" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="500" y1="30" x2="500" y2="90" stroke="#ff6b35" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <defs><marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="#ff6b35" opacity="0.8"/></marker></defs>
+      <line x1="60" y1="28" x2="540" y2="28" stroke="#ff6b35" stroke-width="1.2"/>
+      <text x="300" y="18" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#ff6b35" opacity="0.8">wu = 5.60 k/ft</text>
+      <text x="60" y="138" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#606070">A</text>
+      <text x="540" y="138" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#606070">B</text>
+      <text x="300" y="138" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#a0a0b0">L = 24.0 ft</text>
+      <line x1="60" y1="100" x2="60" y2="118" stroke="#22d3ee" stroke-width="1.5"/>
+      <text x="60" y="130" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#22d3ee">57.0 k</text>
+      <line x1="540" y1="100" x2="540" y2="118" stroke="#22d3ee" stroke-width="1.5"/>
+      <text x="540" y="130" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#22d3ee">57.0 k</text>
+    </svg>`,
+    moment: `<svg width="100%" height="140" viewBox="0 0 600 140">
+      <line x1="60" y1="110" x2="540" y2="110" stroke="#242430" stroke-width="1"/>
+      <path d="M60 110 Q300 20 540 110" fill="rgba(255,107,53,0.12)" stroke="#ff6b35" stroke-width="2"/>
+      <line x1="300" y1="110" x2="300" y2="22" stroke="#ff6b35" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+      <text x="305" y="36" font-family="IBM Plex Mono,monospace" font-size="11" fill="#ff6b35">Mmax = 284.5 kip·ft</text>
+      <text x="60" y="125" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#606070">0</text>
+      <text x="540" y="125" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#606070">0</text>
+      <text x="300" y="130" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#a0a0b0">Bending Moment Diagram</text>
+    </svg>`,
+    shear: `<svg width="100%" height="140" viewBox="0 0 600 140">
+      <line x1="60" y1="70" x2="540" y2="70" stroke="#242430" stroke-width="1"/>
+      <polygon points="60,70 60,30 540,110 540,70" fill="rgba(34,211,238,0.10)" stroke="none"/>
+      <line x1="60" y1="70" x2="60" y2="30" stroke="#22d3ee" stroke-width="2"/>
+      <line x1="60" y1="30" x2="540" y2="110" stroke="#22d3ee" stroke-width="2"/>
+      <line x1="540" y1="110" x2="540" y2="70" stroke="#22d3ee" stroke-width="2"/>
+      <text x="75" y="40" font-family="IBM Plex Mono,monospace" font-size="11" fill="#22d3ee">+57.0 k</text>
+      <text x="430" y="120" font-family="IBM Plex Mono,monospace" font-size="11" fill="#22d3ee">−57.0 k</text>
+      <text x="300" y="135" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#a0a0b0">Shear Force Diagram</text>
+    </svg>`,
+    deflection: `<svg width="100%" height="140" viewBox="0 0 600 140">
+      <line x1="60" y1="40" x2="540" y2="40" stroke="#242430" stroke-width="1" stroke-dasharray="4 3"/>
+      <path d="M60 40 Q300 115 540 40" fill="rgba(255,179,71,0.10)" stroke="#ffb347" stroke-width="2"/>
+      <line x1="300" y1="40" x2="300" y2="113" stroke="#ffb347" stroke-width="1" stroke-dasharray="3 2" opacity="0.6"/>
+      <text x="310" y="108" font-family="IBM Plex Mono,monospace" font-size="11" fill="#ffb347">δ = 0.89 in</text>
+      <text x="150" y="28" font-family="IBM Plex Mono,monospace" font-size="10" fill="#606070" opacity="0.7">limit: L/360 = 0.80 in</text>
+      <line x1="60" y1="32" x2="540" y2="32" stroke="#f87171" stroke-width="1" stroke-dasharray="3 2" opacity="0.5"/>
+      <text x="300" y="132" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#a0a0b0">Live Load Deflection</text>
+    </svg>`
+  };
+  body.innerHTML = diagrams[type] || diagrams.beam;
+}
+
+function toggleExp(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.exp-chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+}
+
+// Wire up inputs
+document.querySelectorAll('input[type=number], select').forEach(el => {
+  el.addEventListener('change', compute);
+});
+</script>
+</body>
+</html>

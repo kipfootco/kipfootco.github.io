@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colors — Semantic</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: var(--bg-base); padding: 20px; font-family: var(--font-body); }
+  .row { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: var(--radius-md); margin-bottom: 4px; background: var(--bg-surface); border: 1px solid var(--border-subtle); }
+  .dot { width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0; }
+  .token { font-family: var(--font-mono); font-size: 12px; color: var(--fg-2); width: 180px; flex-shrink: 0; }
+  .desc  { font-size: 12px; color: var(--fg-3); flex: 1; }
+  .hex   { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); margin-left: auto; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); text-transform: uppercase; margin: 14px 0 6px; font-family: var(--font-body); }
+</style>
+</head>
+<body>
+<div class="section-label">Borders</div>
+<div class="row"><div class="dot" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.2)"></div><div class="token">--border-subtle</div><div class="desc">Surface separators, dividers</div><div class="hex">rgba(255,255,255,0.06)</div></div>
+<div class="row"><div class="dot" style="background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.2)"></div><div class="token">--border-default</div><div class="desc">Card outlines, input borders</div><div class="hex">rgba(255,255,255,0.10)</div></div>
+<div class="row"><div class="dot" style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.2)"></div><div class="token">--border-strong</div><div class="desc">Hover state, active borders</div><div class="hex">rgba(255,255,255,0.18)</div></div>
+<div class="row"><div class="dot" style="background:#ff6b35"></div><div class="token">--border-focus</div><div class="desc">Focus ring (inputs, buttons)</div><div class="hex">#ff6b35</div></div>
+<div class="row"><div class="dot" style="background:#f87171"></div><div class="token">--border-error</div><div class="desc">Validation error state</div><div class="hex">#f87171</div></div>
+<div class="row"><div class="dot" style="background:#4ade80"></div><div class="token">--border-success</div><div class="desc">Validation success state</div><div class="hex">#4ade80</div></div>
+
+<div class="section-label">Status Semantics</div>
+<div class="row"><div class="dot" style="background:#4ade80"></div><div class="token">success / ok</div><div class="desc">Capacity within limits, positive delta</div><div class="hex">--accent-green</div></div>
+<div class="row"><div class="dot" style="background:#ffb347"></div><div class="token">warning / near</div><div class="desc">Within 10% of limit, caution</div><div class="hex">--accent-amber</div></div>
+<div class="row"><div class="dot" style="background:#f87171"></div><div class="token">error / exceeded</div><div class="desc">Capacity exceeded, critical failure</div><div class="hex">--accent-red</div></div>
+<div class="row"><div class="dot" style="background:#22d3ee"></div><div class="token">info / active</div><div class="desc">Selected state, informational</div><div class="hex">--accent-cyan</div></div>
+<div class="row"><div class="dot" style="background:#606070"></div><div class="token">muted / disabled</div><div class="desc">Inactive, not-applicable states</div><div class="hex">--fg-3</div></div>
+</body>
+</html>

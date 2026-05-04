@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Type — Families</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: var(--bg-base); padding: 20px 24px; }
+  .family { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border-subtle); }
+  .family:last-child { border-bottom: none; margin-bottom: 0; }
+  .meta { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .name { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--fg-3); letter-spacing: 0.06em; text-transform: uppercase; }
+  .role { font-size: 11px; color: var(--fg-3); }
+  .weights { display: flex; gap: 20px; flex-wrap: wrap; }
+  .w { }
+  .w-label { font-size: 10px; color: var(--fg-3); font-family: var(--font-mono); margin-bottom: 3px; }
+  .w-sample { font-size: 22px; color: var(--fg-1); line-height: 1.2; }
+  .alphabet { font-size: 13px; color: var(--fg-2); margin-top: 8px; letter-spacing: 0.02em; }
+</style>
+</head>
+<body>
+  <div class="family">
+    <div class="meta">
+      <span class="name">DM Sans</span>
+      <span class="role">— Display · Headlines · Hero</span>
+    </div>
+    <div class="weights">
+      <div class="w"><div class="w-label">300 Light</div><div class="w-sample" style="font-family:var(--font-display);font-weight:300;">Engineering Tools</div></div>
+      <div class="w"><div class="w-label">500 Medium</div><div class="w-sample" style="font-family:var(--font-display);font-weight:500;">Engineering Tools</div></div>
+      <div class="w"><div class="w-label">600 Semibold</div><div class="w-sample" style="font-family:var(--font-display);font-weight:600;">Engineering Tools</div></div>
+      <div class="w"><div class="w-label">700 Bold</div><div class="w-sample" style="font-family:var(--font-display);font-weight:700;">Engineering Tools</div></div>
+    </div>
+    <div class="alphabet" style="font-family:var(--font-display);">AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz 0123456789</div>
+  </div>
+  <div class="family">
+    <div class="meta">
+      <span class="name">IBM Plex Sans</span>
+      <span class="role">— Body · UI · Labels</span>
+    </div>
+    <div class="weights">
+      <div class="w"><div class="w-label">400 Regular</div><div class="w-sample" style="font-family:var(--font-body);font-weight:400;">Engineering Tools</div></div>
+      <div class="w"><div class="w-label">500 Medium</div><div class="w-sample" style="font-family:var(--font-body);font-weight:500;">Engineering Tools</div></div>
+      <div class="w"><div class="w-label">600 Semibold</div><div class="w-sample" style="font-family:var(--font-body);font-weight:600;">Engineering Tools</div></div>
+    </div>
+    <div class="alphabet" style="font-family:var(--font-body);">AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz 0123456789</div>
+  </div>
+  <div class="family">
+    <div class="meta">
+      <span class="name">IBM Plex Mono</span>
+      <span class="role">— Code · Numbers · Tokens · KPI Values</span>
+    </div>
+    <div class="weights">
+      <div class="w"><div class="w-label">400 Regular</div><div class="w-sample" style="font-family:var(--font-mono);font-weight:400;">M = 284.5 kip·ft</div></div>
+      <div class="w"><div class="w-label">500 Medium</div><div class="w-sample" style="font-family:var(--font-mono);font-weight:500;">V = 42.0 kips</div></div>
+      <div class="w"><div class="w-label">600 Semibold</div><div class="w-sample" style="font-family:var(--font-mono);font-weight:600;">δ = 0.78 in</div></div>
+    </div>
+    <div class="alphabet" style="font-family:var(--font-mono);">AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz 0123456789</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colors — Base Surfaces</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: var(--bg-base); padding: 20px; font-family: var(--font-body); }
+  .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .swatch { border-radius: var(--radius-md); overflow: hidden; }
+  .color-block { height: 64px; border: 1px solid rgba(255,255,255,0.06); }
+  .label { padding: 8px; }
+  .name { font-size: 11px; font-weight: 500; color: var(--fg-1); font-family: var(--font-mono); }
+  .hex  { font-size: 10px; color: var(--fg-3); font-family: var(--font-mono); margin-top: 2px; }
+  .token{ font-size: 9px; color: var(--fg-3); font-family: var(--font-mono); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); text-transform: uppercase; margin-bottom: 8px; font-family: var(--font-body); }
+</style>
+</head>
+<body>
+<div class="section-label">Base Surfaces</div>
+<div class="grid">
+  <div class="swatch">
+    <div class="color-block" style="background:#08080a; border:1px solid rgba(255,255,255,0.1)"></div>
+    <div class="label"><div class="name">950</div><div class="hex">#08080a</div><div class="token">--neutral-950</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#0c0c0f"></div>
+    <div class="label"><div class="name">bg-base</div><div class="hex">#0c0c0f</div><div class="token">--bg-base</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#141418"></div>
+    <div class="label"><div class="name">bg-surface</div><div class="hex">#141418</div><div class="token">--bg-surface</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#1c1c22"></div>
+    <div class="label"><div class="name">bg-raised</div><div class="hex">#1c1c22</div><div class="token">--bg-raised</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#242430"></div>
+    <div class="label"><div class="name">bg-overlay</div><div class="hex">#242430</div><div class="token">--bg-overlay</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#383840"></div>
+    <div class="label"><div class="name">neutral-600</div><div class="hex">#383840</div><div class="token">--neutral-600</div></div>
+  </div>
+</div>
+
+<div class="section-label" style="margin-top:20px">Foreground / Text</div>
+<div class="grid">
+  <div class="swatch">
+    <div class="color-block" style="background:#f0f0f4"></div>
+    <div class="label"><div class="name">fg-1</div><div class="hex">#f0f0f4</div><div class="token">--fg-1</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#a0a0b0"></div>
+    <div class="label"><div class="name">fg-2</div><div class="hex">#a0a0b0</div><div class="token">--fg-2</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#606070"></div>
+    <div class="label"><div class="name">fg-3</div><div class="hex">#606070</div><div class="token">--fg-3</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#22d3ee"></div>
+    <div class="label"><div class="name">fg-link</div><div class="hex">#22d3ee</div><div class="token">--fg-link</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#4ade80"></div>
+    <div class="label"><div class="name">fg-code</div><div class="hex">#4ade80</div><div class="token">--fg-code</div></div>
+  </div>
+  <div class="swatch">
+    <div class="color-block" style="background:#f0f0f4; border:1px solid rgba(0,0,0,0.1)"></div>
+    <div class="label"><div class="name">fg-inv</div><div class="hex">#0c0c0f</div><div class="token">--fg-inv</div></div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Card</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: var(--bg-base); padding: 20px 24px; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); text-transform: uppercase; margin: 0 0 12px; font-family: var(--font-body); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+  .tool-card {
+    background: var(--bg-surface);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 200ms cubic-bezier(0.16,1,0.3,1), transform 120ms cubic-bezier(0.16,1,0.3,1);
+    position: relative;
+  }
+  .tool-card:hover { border-color: rgba(255,255,255,0.20); transform: translateY(-1px); }
+  .tool-card:active { transform: scale(0.98); }
+
+  .tool-thumb {
+    height: 72px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .tool-thumb svg { opacity: 0.9; }
+
+  .tool-body { padding: 12px; }
+  .tool-name { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--fg-1); margin-bottom: 4px; }
+  .tool-desc { font-size: 12px; color: var(--fg-2); line-height: 1.5; }
+  .tool-footer { padding: 8px 12px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 6px; }
+  .tool-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; }
+  .tool-version { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); margin-left: auto; }
+</style>
+</head>
+<body>
+<div class="section-label">Tool Library Cards</div>
+<div class="grid">
+
+  <!-- Structural -->
+  <div class="tool-card">
+    <div class="tool-thumb" style="background: linear-gradient(135deg, rgba(255,107,53,0.15) 0%, rgba(255,107,53,0.04) 100%);">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="36" width="36" height="3" rx="1.5" fill="#ff6b35" opacity="0.4"/>
+        <rect x="14" y="12" width="20" height="3" rx="1.5" fill="#ff6b35" opacity="0.4"/>
+        <rect x="6" y="36" width="3" height="24" rx="1.5" fill="#ff6b35" transform="rotate(-90 6 36)" opacity="0.6"/>
+        <path d="M6 36 Q24 8 42 36" stroke="#ff6b35" stroke-width="1.5" fill="none" stroke-dasharray="3 2"/>
+        <circle cx="24" cy="20" r="3" fill="#ff6b35"/>
+        <line x1="24" y1="23" x2="24" y2="36" stroke="#ff6b35" stroke-width="1.5" stroke-dasharray="2 2"/>
+      </svg>
+    </div>
+    <div class="tool-body">
+      <div class="tool-name">Beam Analysis</div>
+      <div class="tool-desc">Bending moment, shear, and deflection for simply supported and continuous beams.</div>
+    </div>
+    <div class="tool-footer">
+      <span class="tool-tag" style="background:rgba(255,107,53,0.15);color:#ff6b35">Structural</span>
+      <span class="tool-version">v2.1</span>
+    </div>
+  </div>
+
+  <!-- Geotechnical -->
+  <div class="tool-card">
+    <div class="tool-thumb" style="background: linear-gradient(135deg, rgba(255,179,71,0.15) 0%, rgba(255,179,71,0.04) 100%);">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <rect x="8" y="8" width="32" height="3" rx="1.5" fill="#ffb347" opacity="0.5"/>
+        <rect x="10" y="16" width="28" height="2" rx="1" fill="#ffb347" opacity="0.35"/>
+        <rect x="12" y="23" width="24" height="2" rx="1" fill="#ffb347" opacity="0.25"/>
+        <rect x="14" y="29" width="20" height="10" rx="2" fill="#ffb347" opacity="0.1"/>
+        <rect x="22" y="8" width="4" height="32" rx="2" fill="#ffb347" opacity="0.6"/>
+        <circle cx="24" cy="38" r="3.5" fill="none" stroke="#ffb347" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="tool-body">
+      <div class="tool-name">Pile Capacity</div>
+      <div class="tool-desc">Axial and lateral capacity of driven piles. Cohesive and cohesionless soils.</div>
+    </div>
+    <div class="tool-footer">
+      <span class="tool-tag" style="background:rgba(255,179,71,0.15);color:#ffb347">Geotechnical</span>
+      <span class="tool-version">v1.3</span>
+    </div>
+  </div>
+
+  <!-- Hydraulic -->
+  <div class="tool-card">
+    <div class="tool-thumb" style="background: linear-gradient(135deg, rgba(34,211,238,0.12) 0%, rgba(34,211,238,0.03) 100%);">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <path d="M6 30 Q12 18 18 26 Q24 34 30 22 Q36 10 42 20" stroke="#22d3ee" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M6 36 Q12 28 18 32 Q24 36 30 28 Q36 20 42 26" stroke="#22d3ee" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round"/>
+        <rect x="6" y="38" width="36" height="2" rx="1" fill="#22d3ee" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="tool-body">
+      <div class="tool-name">Open Channel Flow</div>
+      <div class="tool-desc">Manning's equation for uniform flow in trapezoidal, rectangular, and circular channels.</div>
+    </div>
+    <div class="tool-footer">
+      <span class="tool-tag" style="background:rgba(34,211,238,0.12);color:#22d3ee">Hydraulic</span>
+      <span class="tool-version">v1.0</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

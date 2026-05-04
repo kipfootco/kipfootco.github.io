@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kipfoot — Engineering Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg-base: #0c0c0f;
+  --bg-surface: #141418;
+  --bg-raised: #1c1c22;
+  --bg-overlay: #242430;
+  --fg-1: #f0f0f4;
+  --fg-2: #a0a0b0;
+  --fg-3: #606070;
+  --accent-orange: #ff6b35;
+  --accent-amber: #ffb347;
+  --accent-green: #4ade80;
+  --accent-cyan: #22d3ee;
+  --accent-purple: #a78bfa;
+  --accent-red: #f87171;
+  --border-subtle: rgba(255,255,255,0.06);
+  --border-default: rgba(255,255,255,0.10);
+  --border-strong: rgba(255,255,255,0.18);
+  --font-display: 'DM Sans', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+html { -webkit-font-smoothing: antialiased; }
+body { background: var(--bg-base); color: var(--fg-1); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+
+/* NAV */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 56px;
+  background: rgba(12,12,15,0.80);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; align-items: center; padding: 0 32px; gap: 0;
+}
+.nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; margin-right: 36px; }
+.logo-mark { width: 20px; height: 20px; }
+.logo-text { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--fg-1); letter-spacing: -0.02em; }
+.nav-links { display: flex; gap: 2px; }
+.nav-link { font-size: 13px; font-weight: 500; color: var(--fg-2); padding: 6px 11px; border-radius: 7px; text-decoration: none; transition: color 120ms var(--ease), background 120ms var(--ease); }
+.nav-link:hover { color: var(--fg-1); background: rgba(255,255,255,0.05); }
+.nav-link.active { color: var(--fg-1); }
+.nav-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body); font-size: 13px; font-weight: 500; border-radius: 7px; border: 1px solid transparent; cursor: pointer; transition: all 120ms var(--ease); text-decoration: none; }
+.btn-sm { height: 30px; padding: 0 12px; }
+.btn-ghost { background: transparent; color: var(--fg-2); border-color: transparent; }
+.btn-ghost:hover { color: var(--fg-1); background: rgba(255,255,255,0.05); }
+.btn-primary { background: var(--accent-orange); color: #0c0c0f; border-color: var(--accent-orange); box-shadow: 0 0 16px rgba(255,107,53,0.2); }
+.btn-primary:hover { background: #e85a24; border-color: #e85a24; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 32px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,107,53,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent-orange); background: rgba(255,107,53,0.10);
+  border: 1px solid rgba(255,107,53,0.20);
+  padding: 4px 12px; border-radius: 9999px;
+  margin-bottom: 28px;
+}
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--fg-1);
+  max-width: 800px;
+  margin-bottom: 20px;
+}
+.hero-headline span { color: var(--accent-orange); }
+.hero-sub {
+  font-size: clamp(15px, 2vw, 18px);
+  color: var(--fg-2);
+  max-width: 520px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+.hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.btn-lg { height: 44px; padding: 0 22px; font-size: 15px; border-radius: 9px; }
+.btn-secondary { background: var(--bg-overlay); color: var(--fg-1); border-color: var(--border-default); }
+.btn-secondary:hover { border-color: var(--border-strong); background: #2c2c3c; }
+.hero-note { margin-top: 16px; font-size: 12px; color: var(--fg-3); }
+
+/* CAROUSEL */
+.section { padding: 80px 32px; max-width: 1200px; margin: 0 auto; }
+.section-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 28px; }
+.section-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--fg-1); }
+.section-count { font-family: var(--font-mono); font-size: 13px; color: var(--fg-3); }
+
+.carousel { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+.carousel::-webkit-scrollbar { display: none; }
+.carousel-card {
+  flex-shrink: 0; width: 220px;
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  cursor: pointer;
+  transition: transform 200ms var(--ease), border-color 200ms var(--ease);
+}
+.carousel-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+.carousel-card:active { transform: scale(0.98); }
+.cc-thumb { height: 100px; display: flex; align-items: center; justify-content: center; position: relative; }
+.cc-body { padding: 12px 14px 14px; }
+.cc-name { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--fg-1); margin-bottom: 4px; }
+.cc-desc { font-size: 12px; color: var(--fg-2); line-height: 1.5; }
+
+/* DISCIPLINE GRID */
+.discipline-section { margin-bottom: 56px; }
+.disc-label {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--fg-3); margin-bottom: 14px;
+}
+.disc-line { flex: 1; height: 1px; background: var(--border-subtle); }
+.tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.tool-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 12px; overflow: hidden;
+  cursor: pointer;
+  transition: border-color 200ms var(--ease), transform 120ms var(--ease);
+}
+.tool-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+.tool-card:active { transform: scale(0.98); }
+.tc-thumb { height: 68px; display: flex; align-items: center; justify-content: center; }
+.tc-body { padding: 10px 12px; }
+.tc-name { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--fg-1); margin-bottom: 3px; }
+.tc-desc { font-size: 11px; color: var(--fg-2); line-height: 1.5; }
+.tc-footer { padding: 7px 12px; border-top: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 6px; }
+.tc-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; }
+.tc-version { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); margin-left: auto; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 32px;
+  display: flex; align-items: center; gap: 16px;
+  max-width: 1200px; margin: 0 auto;
+}
+.footer-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.footer-links { display: flex; gap: 20px; margin-left: 32px; }
+.footer-link { font-size: 13px; color: var(--fg-3); text-decoration: none; }
+.footer-link:hover { color: var(--fg-2); }
+.footer-right { margin-left: auto; font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <svg class="logo-mark" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="3.5" height="24" rx="1.5" fill="#ff6b35"/><line x1="7.5" y1="16" x2="21" y2="7" stroke="#ff6b35" stroke-width="3.5" stroke-linecap="round"/><line x1="7.5" y1="16" x2="21" y2="25" stroke="#ff6b35" stroke-width="3.5" stroke-linecap="round"/></svg>
+    <span class="logo-text">kipfoot</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link active" href="#">Tools</a>
+    <a class="nav-link" href="../tool-library/index.html">Library</a>
+    <a class="nav-link" href="#">Docs</a>
+    <a class="nav-link" href="#">Pricing</a>
+  </div>
+  <div class="nav-right">
+    <a class="btn btn-sm btn-ghost" href="#">Log in</a>
+    <a class="btn btn-sm btn-primary" href="#">Get Access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#ff6b35"/></svg>
+    Engineering Calculation Tools
+  </div>
+  <h1 class="hero-headline">
+    Precise tools for<br><span>serious engineers.</span>
+  </h1>
+  <p class="hero-sub">
+    A curated suite of interactive calculation and analysis tools. Fast inputs, traceable results, and built-in code references — no spreadsheets required.
+  </p>
+  <div class="hero-actions">
+    <a class="btn btn-lg btn-primary" href="../tool-library/index.html">Browse Tools</a>
+    <a class="btn btn-lg btn-secondary" href="../engineering-tool/index.html">See an Example</a>
+  </div>
+  <div class="hero-note">Free during beta · No account required for most tools</div>
+</section>
+
+<!-- FEATURED CAROUSEL -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-title">Featured</span>
+    <span class="section-count">6 tools</span>
+  </div>
+  <div class="carousel">
+
+    <!-- Beam Analysis -->
+    <div class="carousel-card" onclick="window.location='../engineering-tool/index.html'">
+      <div class="cc-thumb" style="background:linear-gradient(135deg,rgba(255,107,53,0.18) 0%,rgba(255,107,53,0.04) 100%)">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+          <rect x="6" y="40" width="44" height="3" rx="1.5" fill="#ff6b35" opacity="0.4"/>
+          <rect x="6" y="13" width="44" height="3" rx="1.5" fill="#ff6b35" opacity="0.3"/>
+          <path d="M6 43 Q28 10 50 43" stroke="#ff6b35" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+          <circle cx="28" cy="22" r="4" fill="#ff6b35" opacity="0.9"/>
+          <line x1="28" y1="26" x2="28" y2="43" stroke="#ff6b35" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="cc-body">
+        <div class="cc-name">Beam Analysis</div>
+        <div class="cc-desc">Moment, shear, and deflection for simply supported and continuous beams.</div>
+      </div>
+    </div>
+
+    <!-- Column Design -->
+    <div class="carousel-card">
+      <div class="cc-thumb" style="background:linear-gradient(135deg,rgba(255,107,53,0.14) 0%,rgba(255,107,53,0.03) 100%)">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+          <rect x="24" y="8" width="8" height="40" rx="3" fill="#ff6b35" opacity="0.25"/>
+          <rect x="18" y="8" width="20" height="5" rx="2" fill="#ff6b35" opacity="0.5"/>
+          <rect x="18" y="43" width="20" height="5" rx="2" fill="#ff6b35" opacity="0.5"/>
+          <path d="M24 18 Q20 28 24 38" stroke="#ff6b35" stroke-width="1.5" fill="none" stroke-dasharray="3 2"/>
+        </svg>
+      </div>
+      <div class="cc-body">
+        <div class="cc-name">Column Design</div>
+        <div class="cc-desc">Axial and combined loading checks per AISC 360 and ACI 318.</div>
+      </div>
+    </div>
+
+    <!-- Pile Capacity -->
+    <div class="carousel-card">
+      <div class="cc-thumb" style="background:linear-gradient(135deg,rgba(255,179,71,0.15) 0%,rgba(255,179,71,0.04) 100%)">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+          <rect x="10" y="10" width="36" height="3" rx="1.5" fill="#ffb347" opacity="0.5"/>
+          <rect x="12" y="18" width="32" height="2" rx="1" fill="#ffb347" opacity="0.35"/>
+          <rect x="14" y="25" width="28" height="2" rx="1" fill="#ffb347" opacity="0.25"/>
+          <rect x="25" y="10" width="6" height="36" rx="3" fill="#ffb347" opacity="0.5"/>
+          <circle cx="28" cy="44" r="4" fill="none" stroke="#ffb347" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="cc-body">
+        <div class="cc-name">Pile Capacity</div>
+        <div class="cc-desc">Axial and lateral resistance of driven piles in cohesive and cohesionless soils.</div>
+      </div>
+    </div>
+
+    <!-- Open Channel -->
+    <div class="carousel-card">
+      <div class="cc-thumb" style="background:linear-gradient(135deg,rgba(34,211,238,0.12) 0%,rgba(34,211,238,0.03) 100%)">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+          <path d="M8 34 Q16 20 22 30 Q28 40 34 26 Q40 12 48 24" stroke="#22d3ee" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M8 40 Q16 32 22 36 Q28 40 34 32 Q40 24 48 30" stroke="#22d3ee" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round"/>
+          <rect x="8" y="42" width="40" height="2.5" rx="1.25" fill="#22d3ee" opacity="0.25"/>
+        </svg>
+      </div>
+      <div class="cc-body">
+        <div class="cc-name">Open Channel Flow</div>
+        <div class="cc-desc">Manning's equation for uniform flow in trapezoidal and rectangular sections.</div>
+      </div>
+    </div>
+
+    <!-- Wind Pressure -->
+    <div class="carousel-card">
+      <div class="cc-thumb" style="background:linear-gradient(135deg,rgba(103,232,249,0.12) 0%,rgba(103,232,249,0.03) 100%)">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+          <path d="M10 28 Q20 18 30 24 Q36 28 40 22" stroke="#67e8f9" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M10 36 Q22 28 34 32 Q40 34 46 30" stroke="#67e8f9" stroke-width="1.5" fill="none" opacity="0.5" stroke-linecap="round"/>
+          <path d="M10 20 Q16 14 22 18" stroke="#67e8f9" stroke-width="1" fill="none" opacity="0.3" stroke-linecap="round"/>
+          <rect x="40" y="12" width="4" height="32" rx="2" fill="#67e8f9" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="cc-body">
+        <div class="cc-name">Wind Pressure</div>
+        <div class="cc-desc">ASCE 7 Components and Cladding wind pressure for enclosed buildings.</div>
+      </div>
+    </div>
+
+    <!-- Connection Design -->
+    <div class="carousel-card">
+      <div class="cc-thumb" style="background:linear-gradient(135deg,rgba(167,139,250,0.12) 0%,rgba(167,139,250,0.03) 100%)">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+          <rect x="8" y="24" width="40" height="8" rx="3" fill="#a78bfa" opacity="0.2"/>
+          <rect x="20" y="12" width="8" height="32" rx="3" fill="#a78bfa" opacity="0.2"/>
+          <circle cx="24" cy="28" r="3.5" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+          <circle cx="32" cy="28" r="3.5" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+          <circle cx="24" cy="20" r="3.5" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+          <circle cx="24" cy="36" r="3.5" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="cc-body">
+        <div class="cc-name">Bolt Group Analysis</div>
+        <div class="cc-desc">Elastic and instantaneous center methods for eccentric bolt groups.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- STRUCTURAL DISCIPLINE -->
+<div class="section" style="padding-top:0">
+
+  <div class="discipline-section">
+    <div class="disc-label">
+      <span style="color:#ff6b35">Structural</span>
+      <span class="disc-line"></span>
+      <span>8 tools</span>
+    </div>
+    <div class="tool-grid">
+      <div class="tool-card" onclick="window.location='../engineering-tool/index.html'">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,107,53,0.12) 0%,rgba(255,107,53,0.03) 100%)">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="28" width="32" height="2.5" rx="1.25" fill="#ff6b35" opacity="0.5"/><path d="M4 30 Q20 8 36 30" stroke="#ff6b35" stroke-width="1.5" fill="none" stroke-dasharray="3 2"/><circle cx="20" cy="16" r="3" fill="#ff6b35" opacity="0.8"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Beam Analysis</div><div class="tc-desc">Moment, shear, deflection for supported beams.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,107,53,0.15);color:#ff6b35">Structural</span><span class="tc-version">v2.1</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,107,53,0.10) 0%,rgba(255,107,53,0.02) 100%)">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="17" y="5" width="6" height="30" rx="2.5" fill="#ff6b35" opacity="0.25"/><rect x="12" y="5" width="16" height="4" rx="1.5" fill="#ff6b35" opacity="0.5"/><rect x="12" y="31" width="16" height="4" rx="1.5" fill="#ff6b35" opacity="0.5"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Column Design</div><div class="tc-desc">Axial and combined loading checks per AISC 360.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,107,53,0.15);color:#ff6b35">Structural</span><span class="tc-version">v1.8</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,107,53,0.10) 0%,rgba(255,107,53,0.02) 100%)">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="28" width="32" height="2" rx="1" fill="#ff6b35" opacity="0.3"/><rect x="10" y="14" width="20" height="14" rx="1.5" fill="#ff6b35" opacity="0.12"/><circle cx="16" cy="22" r="2.5" fill="none" stroke="#ff6b35" stroke-width="1.5"/><circle cx="24" cy="22" r="2.5" fill="none" stroke="#ff6b35" stroke-width="1.5"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Bolt Group Analysis</div><div class="tc-desc">Eccentric bolt groups — elastic and IC methods.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,107,53,0.15);color:#ff6b35">Structural</span><span class="tc-version">v1.2</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="discipline-section">
+    <div class="disc-label">
+      <span style="color:#ffb347">Geotechnical</span>
+      <span class="disc-line"></span>
+      <span>4 tools</span>
+    </div>
+    <div class="tool-grid">
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,179,71,0.12) 0%,rgba(255,179,71,0.03) 100%)">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="2.5" rx="1.25" fill="#ffb347" opacity="0.5"/><rect x="10" y="14" width="20" height="1.5" rx="0.75" fill="#ffb347" opacity="0.35"/><rect x="12" y="20" width="16" height="1.5" rx="0.75" fill="#ffb347" opacity="0.25"/><rect x="18" y="8" width="4" height="26" rx="2" fill="#ffb347" opacity="0.5"/><circle cx="20" cy="33" r="3" fill="none" stroke="#ffb347" stroke-width="1.5"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Pile Capacity</div><div class="tc-desc">Axial and lateral resistance of driven piles.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,179,71,0.15);color:#ffb347">Geotechnical</span><span class="tc-version">v1.3</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,179,71,0.10) 0%,rgba(255,179,71,0.02) 100%)">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="5" y="12" width="30" height="20" rx="2" fill="#ffb347" opacity="0.08"/><rect x="5" y="12" width="30" height="3" rx="1" fill="#ffb347" opacity="0.4"/><path d="M5 32 L20 18 L35 32" stroke="#ffb347" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Bearing Capacity</div><div class="tc-desc">Terzaghi and Meyerhof general bearing capacity equations.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,179,71,0.15);color:#ffb347">Geotechnical</span><span class="tc-version">v1.0</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,179,71,0.10) 0%,rgba(255,179,71,0.02) 100%)">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" rx="2" fill="none" stroke="#ffb347" stroke-width="1.5" opacity="0.4"/><path d="M8 32 L20 14 L32 32" fill="#ffb347" opacity="0.15"/><path d="M8 32 L20 14 L32 32" stroke="#ffb347" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Slope Stability</div><div class="tc-desc">Factor of safety for infinite slope and simple slip circle.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,179,71,0.15);color:#ffb347">Geotechnical</span><span class="tc-version">v0.9 Beta</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a class="footer-logo" href="#">
+    <svg width="18" height="18" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="3.5" height="24" rx="1.5" fill="#ff6b35"/><line x1="7.5" y1="16" x2="21" y2="7" stroke="#ff6b35" stroke-width="3.5" stroke-linecap="round"/><line x1="7.5" y1="16" x2="21" y2="25" stroke="#ff6b35" stroke-width="3.5" stroke-linecap="round"/></svg>
+    <span style="font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--fg-2);letter-spacing:-0.01em">kipfoot</span>
+  </a>
+  <div class="footer-links">
+    <a class="footer-link" href="#">Terms</a>
+    <a class="footer-link" href="#">Privacy</a>
+    <a class="footer-link" href="#">Changelog</a>
+    <a class="footer-link" href="#">Status</a>
+  </div>
+  <div class="footer-right">v0.4.2 · Beta</div>
+</footer>
+
+</body>
+</html>

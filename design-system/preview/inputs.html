@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Inputs</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: var(--bg-base); padding: 20px 24px; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); text-transform: uppercase; margin: 16px 0 8px; font-family: var(--font-body); }
+  .section-label:first-child { margin-top: 0; }
+  .field { margin-bottom: 12px; }
+  .label { font-family: var(--font-body); font-size: 12px; font-weight: 500; color: var(--fg-2); margin-bottom: 5px; display: flex; align-items: center; justify-content: space-between; }
+  .hint  { font-size: 11px; color: var(--fg-3); }
+  .input-wrap { position: relative; }
+  input, select, textarea {
+    width: 100%; background: var(--bg-raised); border: 1px solid rgba(255,255,255,0.10);
+    border-radius: var(--radius-md); color: var(--fg-1);
+    font-family: var(--font-body); font-size: 13px; padding: 0 12px;
+    height: 36px; outline: none;
+    transition: border-color 120ms ease;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus {
+    border-color: #ff6b35;
+    box-shadow: 0 0 0 3px rgba(255,107,53,0.12);
+  }
+  input.error { border-color: #f87171; }
+  input.error:focus { box-shadow: 0 0 0 3px rgba(248,113,113,0.12); }
+  input.success { border-color: #4ade80; }
+  input::placeholder { color: var(--fg-3); }
+  .suffix { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); }
+  .helper { font-size: 11px; margin-top: 4px; }
+  .helper.error-text { color: #f87171; }
+  .helper.ok-text { color: #4ade80; }
+  textarea { height: auto; padding: 10px 12px; resize: vertical; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  select { cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="section-label">Text Input States</div>
+<div class="two-col">
+  <div class="field">
+    <div class="label">Span Length <span class="hint">required</span></div>
+    <div class="input-wrap">
+      <input type="text" placeholder="e.g. 24.0" value="">
+      <span class="suffix">ft</span>
+    </div>
+    <div class="helper" style="color:var(--fg-3)">Clear span between supports</div>
+  </div>
+  <div class="field">
+    <div class="label">Span Length</div>
+    <div class="input-wrap">
+      <input type="text" value="24.5">
+      <span class="suffix">ft</span>
+    </div>
+    <div class="helper ok-text">Valid input</div>
+  </div>
+  <div class="field">
+    <div class="label">Distributed Load</div>
+    <div class="input-wrap">
+      <input type="text" class="error" value="—">
+      <span class="suffix">k/ft</span>
+    </div>
+    <div class="helper error-text">Must be a positive number</div>
+  </div>
+  <div class="field">
+    <div class="label">Section</div>
+    <select>
+      <option>W18×97</option>
+      <option>W21×68</option>
+      <option>W24×55</option>
+    </select>
+  </div>
+</div>
+
+<div class="section-label">Inline Number Pair</div>
+<div style="display:flex;gap:8px;align-items:center;max-width:300px">
+  <div class="input-wrap" style="position:relative;flex:1">
+    <input type="text" value="12.0">
+    <span class="suffix">ft</span>
+  </div>
+  <span style="color:var(--fg-3);font-size:13px;flex-shrink:0">×</span>
+  <div class="input-wrap" style="position:relative;flex:1">
+    <input type="text" value="24.0">
+    <span class="suffix">ft</span>
+  </div>
+</div>
+
+</body>
+</html>

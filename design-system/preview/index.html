@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kipfoot - Component Preview Index</title>
+<meta name="description" content="Kipfoot component and token preview gallery.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: 0 var(--space-6);
+    background: rgba(12, 12, 15, 0.86);
+    border-bottom: 1px solid var(--border-subtle);
+    backdrop-filter: blur(12px);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--fg-1);
+    text-decoration: none;
+    margin-right: auto;
+  }
+
+  .brand img {
+    width: 116px;
+    height: auto;
+  }
+
+  .nav-link {
+    color: var(--fg-2);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+  }
+
+  .nav-link:hover,
+  .nav-link:focus {
+    color: var(--fg-1);
+    background: rgba(255, 255, 255, 0.05);
+    opacity: 1;
+  }
+
+  .wrap {
+    width: min(var(--max-content), calc(100vw - 48px));
+    margin: 0 auto;
+    padding: var(--space-16) 0;
+  }
+
+  .page-head {
+    margin-bottom: var(--space-10);
+  }
+
+  .eyebrow {
+    color: var(--accent-orange);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    margin-bottom: var(--space-3);
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+    letter-spacing: 0;
+  }
+
+  .intro {
+    max-width: 680px;
+    margin-top: var(--space-4);
+    color: var(--fg-2);
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+  }
+
+  .group {
+    margin-top: var(--space-12);
+  }
+
+  .group-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .group-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    color: var(--fg-1);
+  }
+
+  .group-count {
+    color: var(--fg-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .preview-link {
+    display: block;
+    min-height: 148px;
+    padding: var(--space-5);
+    color: var(--fg-1);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: border-color var(--duration-base) var(--ease-out-expo), background var(--duration-base) var(--ease-out-expo), transform var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .preview-link:hover,
+  .preview-link:focus {
+    opacity: 1;
+    transform: translateY(-2px);
+    background: var(--bg-raised);
+    border-color: var(--border-strong);
+  }
+
+  .preview-kicker {
+    color: var(--fg-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+  }
+
+  .preview-title {
+    margin-top: var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+  }
+
+  .preview-copy {
+    margin-top: var(--space-2);
+    color: var(--fg-2);
+    font-size: var(--text-sm);
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .site-nav {
+      height: auto;
+      min-height: var(--nav-height);
+      flex-wrap: wrap;
+      padding: var(--space-3) var(--space-4);
+    }
+
+    .brand {
+      width: 100%;
+    }
+
+    .wrap {
+      width: calc(100vw - 32px);
+      padding: var(--space-10) 0;
+    }
+
+    h1 {
+      font-size: var(--text-2xl);
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary">
+    <a class="brand" href="../index.html" aria-label="Kipfoot design system home">
+      <img src="../assets/logo.svg" alt="Kipfoot">
+    </a>
+    <a class="nav-link" href="../index.html">Design System</a>
+    <a class="nav-link" href="../ui_kits/homepage/index.html">Prototype</a>
+    <a class="nav-link" href="../README.md">README</a>
+  </nav>
+
+  <main class="wrap">
+    <header class="page-head">
+      <div class="eyebrow">Component gallery</div>
+      <h1>Preview cards for tokens, components, and tool UI patterns.</h1>
+      <p class="intro">
+        Each link opens a focused static preview. The previews are intentionally narrow and
+        isolated so individual tokens and components can be inspected without the full app shell.
+      </p>
+    </header>
+
+    <section class="group" aria-labelledby="color-heading">
+      <div class="group-head">
+        <h2 class="group-title" id="color-heading">Colors</h2>
+        <span class="group-count">3 previews</span>
+      </div>
+      <div class="grid">
+        <a class="preview-link" href="colors-base.html">
+          <div class="preview-kicker">Tokens</div>
+          <div class="preview-title">Base Surfaces</div>
+          <p class="preview-copy">Dark surface hierarchy, foreground text levels, and core neutrals.</p>
+        </a>
+        <a class="preview-link" href="colors-accent.html">
+          <div class="preview-kicker">Tokens</div>
+          <div class="preview-title">Accent Colors</div>
+          <p class="preview-copy">Brand, discipline, and highlight colors used across tool cards and KPIs.</p>
+        </a>
+        <a class="preview-link" href="colors-semantic.html">
+          <div class="preview-kicker">Tokens</div>
+          <div class="preview-title">Semantic Colors</div>
+          <p class="preview-copy">Border, state, success, warning, info, and error treatments.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="group" aria-labelledby="type-heading">
+      <div class="group-head">
+        <h2 class="group-title" id="type-heading">Type And Layout</h2>
+        <span class="group-count">4 previews</span>
+      </div>
+      <div class="grid">
+        <a class="preview-link" href="type-scale.html">
+          <div class="preview-kicker">Typography</div>
+          <div class="preview-title">Type Scale</div>
+          <p class="preview-copy">Display, heading, body, label, caption, and mono numeric sizes.</p>
+        </a>
+        <a class="preview-link" href="type-families.html">
+          <div class="preview-kicker">Typography</div>
+          <div class="preview-title">Font Families</div>
+          <p class="preview-copy">DM Sans, IBM Plex Sans, and IBM Plex Mono usage examples.</p>
+        </a>
+        <a class="preview-link" href="spacing-tokens.html">
+          <div class="preview-kicker">Layout</div>
+          <div class="preview-title">Spacing Tokens</div>
+          <p class="preview-copy">4px-based spacing scale for dense engineering interfaces.</p>
+        </a>
+        <a class="preview-link" href="radius-shadow.html">
+          <div class="preview-kicker">Layout</div>
+          <div class="preview-title">Radius And Shadow</div>
+          <p class="preview-copy">Corner radius and elevation levels for surfaces, panels, and overlays.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="group" aria-labelledby="component-heading">
+      <div class="group-head">
+        <h2 class="group-title" id="component-heading">Components</h2>
+        <span class="group-count">8 previews</span>
+      </div>
+      <div class="grid">
+        <a class="preview-link" href="buttons.html">
+          <div class="preview-kicker">Action</div>
+          <div class="preview-title">Buttons</div>
+          <p class="preview-copy">Primary, secondary, ghost, outline, danger, disabled, and size variants.</p>
+        </a>
+        <a class="preview-link" href="badges-tags.html">
+          <div class="preview-kicker">Metadata</div>
+          <div class="preview-title">Badges And Tags</div>
+          <p class="preview-copy">Status badges, discipline tags, pills, and small inline labels.</p>
+        </a>
+        <a class="preview-link" href="inputs.html">
+          <div class="preview-kicker">Forms</div>
+          <div class="preview-title">Form Inputs</div>
+          <p class="preview-copy">Text fields, selects, unit suffixes, and validation-oriented states.</p>
+        </a>
+        <a class="preview-link" href="cards.html">
+          <div class="preview-kicker">Surface</div>
+          <div class="preview-title">Cards</div>
+          <p class="preview-copy">Default, flat, elevated, and accent treatments for repeated content.</p>
+        </a>
+        <a class="preview-link" href="tool-card.html">
+          <div class="preview-kicker">Library</div>
+          <div class="preview-title">Tool Card</div>
+          <p class="preview-copy">Visual cards for browsing and launching discipline-specific tools.</p>
+        </a>
+        <a class="preview-link" href="nav.html">
+          <div class="preview-kicker">Navigation</div>
+          <div class="preview-title">Navigation</div>
+          <p class="preview-copy">Top navigation and sidebar navigation treatments.</p>
+        </a>
+        <a class="preview-link" href="kpi-card.html">
+          <div class="preview-kicker">Results</div>
+          <div class="preview-title">KPI Cards</div>
+          <p class="preview-copy">Numeric result cards with units, deltas, utilization bars, and state color.</p>
+        </a>
+        <a class="preview-link" href="expandable.html">
+          <div class="preview-kicker">Learning</div>
+          <div class="preview-title">Expandable Panels</div>
+          <p class="preview-copy">Progressive disclosure for learning notes, assumptions, and equations.</p>
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

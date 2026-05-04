@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cards</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: var(--bg-base); padding: 20px 24px; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); text-transform: uppercase; margin: 16px 0 10px; font-family: var(--font-body); }
+  .section-label:first-child { margin-top: 0; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
+
+  /* Base card */
+  .card {
+    background: var(--bg-surface);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+    padding: 16px;
+    transition: border-color 200ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .card:hover { border-color: rgba(255,255,255,0.18); }
+
+  /* Flat / no shadow */
+  .card-flat { background: var(--bg-raised); box-shadow: none; }
+
+  /* Elevated */
+  .card-elevated { box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+
+  /* Accent bordered */
+  .card-accent { border-color: rgba(255,107,53,0.3); box-shadow: 0 0 16px rgba(255,107,53,0.08); }
+
+  .card-title  { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--fg-1); margin-bottom: 4px; }
+  .card-body   { font-size: 13px; color: var(--fg-2); line-height: 1.5; }
+  .card-footer { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 8px; align-items: center; }
+  .card-tag    { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="section-label">Card Variants</div>
+<div class="row">
+  <div class="card" style="width:200px">
+    <div class="card-title">Default Card</div>
+    <div class="card-body">Surface-level container. Used for tool panels, results, inputs.</div>
+  </div>
+  <div class="card card-flat" style="width:200px">
+    <div class="card-title">Flat Card</div>
+    <div class="card-body">Raised background, no shadow. Used inside another card.</div>
+  </div>
+  <div class="card card-elevated" style="width:200px">
+    <div class="card-title">Elevated Card</div>
+    <div class="card-body">Shadow level 2. Used for modals, popovers, floating panels.</div>
+  </div>
+  <div class="card card-accent" style="width:200px">
+    <div class="card-title">Accent Card</div>
+    <div class="card-body">Orange accent border. Used for featured items or active selection.</div>
+  </div>
+</div>
+
+<div class="section-label" style="margin-top:20px">With Footer</div>
+<div class="row">
+  <div class="card" style="width:240px">
+    <div class="card-title">Beam Analysis</div>
+    <div class="card-body">Compute bending moment, shear, and deflection for simply supported beams.</div>
+    <div class="card-footer">
+      <span class="card-tag" style="background:rgba(255,107,53,0.15);color:#ff6b35">Structural</span>
+      <span style="margin-left:auto;font-size:11px;color:var(--fg-3);font-family:var(--font-mono)">v2.1</span>
+    </div>
+  </div>
+  <div class="card" style="width:240px">
+    <div class="card-title">Pile Capacity</div>
+    <div class="card-body">Calculate axial and lateral capacity of driven piles in cohesive soils.</div>
+    <div class="card-footer">
+      <span class="card-tag" style="background:rgba(255,179,71,0.15);color:#ffb347">Geotechnical</span>
+      <span style="margin-left:auto;font-size:11px;color:var(--fg-3);font-family:var(--font-mono)">v1.3</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

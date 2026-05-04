@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPI Cards</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: var(--bg-base); padding: 20px 24px; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); text-transform: uppercase; margin: 0 0 12px; font-family: var(--font-body); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi {
+    background: var(--bg-surface);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .kpi-label { font-size: 11px; font-weight: 500; color: var(--fg-3); letter-spacing: 0.04em; margin-bottom: 6px; font-family: var(--font-body); }
+  .kpi-value { font-family: var(--font-mono); font-size: 26px; font-weight: 600; color: var(--fg-1); line-height: 1; letter-spacing: -0.02em; }
+  .kpi-unit  { font-family: var(--font-mono); font-size: 13px; color: var(--fg-3); margin-left: 4px; font-weight: 400; }
+  .kpi-delta { font-size: 11px; margin-top: 6px; font-family: var(--font-mono); }
+  .delta-up   { color: #4ade80; }
+  .delta-down { color: #f87171; }
+  .delta-warn { color: #ffb347; }
+  .kpi-bar { margin-top: 10px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+  .kpi-bar-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+  .kpi-status { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 500; padding: 2px 6px; border-radius: 9999px; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="section-label">KPI / Result Cards</div>
+<div class="grid">
+  <div class="kpi">
+    <div class="kpi-label">Max Moment</div>
+    <div><span class="kpi-value">284.5</span><span class="kpi-unit">kip·ft</span></div>
+    <div class="kpi-delta delta-up">↓ 12% below ϕMn</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:72%;background:#4ade80"></div></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Max Shear</div>
+    <div><span class="kpi-value">42.0</span><span class="kpi-unit">kips</span></div>
+    <div class="kpi-delta delta-up">↓ 28% below ϕVn</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:55%;background:#4ade80"></div></div>
+  </div>
+  <div class="kpi" style="border-color:rgba(255,179,71,0.3)">
+    <div class="kpi-label">Deflection</div>
+    <div><span class="kpi-value" style="color:#ffb347">0.94</span><span class="kpi-unit">in</span></div>
+    <div class="kpi-delta delta-warn">↑ 94% of L/360 limit</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:94%;background:#ffb347"></div></div>
+  </div>
+  <div class="kpi" style="border-color:rgba(248,113,113,0.3)">
+    <div class="kpi-label">D/C Ratio</div>
+    <div><span class="kpi-value" style="color:#f87171">1.08</span></div>
+    <div class="kpi-delta delta-down">↑ Exceeds capacity by 8%</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%;background:#f87171"></div></div>
+  </div>
+</div>
+
+<div class="section-label">Inline Metric Row</div>
+<div style="background:var(--bg-surface);border:1px solid rgba(255,255,255,0.10);border-radius:10px;padding:14px;display:flex;gap:0">
+  <div style="flex:1;padding-right:16px;border-right:1px solid rgba(255,255,255,0.06)">
+    <div class="kpi-label">Span</div>
+    <div><span class="kpi-value" style="font-size:18px">24.0</span><span class="kpi-unit">ft</span></div>
+  </div>
+  <div style="flex:1;padding:0 16px;border-right:1px solid rgba(255,255,255,0.06)">
+    <div class="kpi-label">Load</div>
+    <div><span class="kpi-value" style="font-size:18px">3.5</span><span class="kpi-unit">k/ft</span></div>
+  </div>
+  <div style="flex:1;padding:0 16px;border-right:1px solid rgba(255,255,255,0.06)">
+    <div class="kpi-label">Section</div>
+    <div><span class="kpi-value" style="font-size:18px;font-family:var(--font-mono)">W18×97</span></div>
+  </div>
+  <div style="flex:1;padding-left:16px">
+    <div class="kpi-label">Status</div>
+    <div class="kpi-status" style="background:rgba(74,222,128,0.1);color:#4ade80;margin-top:4px"><span style="width:6px;height:6px;background:#4ade80;border-radius:50%;display:inline-block"></span>Passes</div>
+  </div>
+</div>
+</body>
+</html>

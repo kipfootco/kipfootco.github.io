@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kipfoot — Tool Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg-base: #0c0c0f; --bg-surface: #141418; --bg-raised: #1c1c22; --bg-overlay: #242430;
+  --fg-1: #f0f0f4; --fg-2: #a0a0b0; --fg-3: #606070;
+  --accent-orange: #ff6b35; --accent-amber: #ffb347; --accent-green: #4ade80;
+  --accent-cyan: #22d3ee; --accent-purple: #a78bfa; --accent-red: #f87171;
+  --border-subtle: rgba(255,255,255,0.06); --border-default: rgba(255,255,255,0.10); --border-strong: rgba(255,255,255,0.18);
+  --font-display: 'DM Sans', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+html { -webkit-font-smoothing: antialiased; }
+body { background: var(--bg-base); color: var(--fg-1); font-family: var(--font-body); font-size: 15px; line-height: 1.5; display: flex; flex-direction: column; min-height: 100vh; }
+
+/* NAV */
+.nav {
+  height: 56px; background: rgba(12,12,15,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; align-items: center; padding: 0 24px; gap: 0; flex-shrink: 0;
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; margin-right: 32px; }
+.logo-text { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--fg-1); letter-spacing: -0.02em; }
+.nav-links { display: flex; gap: 2px; }
+.nav-link { font-size: 13px; font-weight: 500; color: var(--fg-2); padding: 6px 11px; border-radius: 7px; text-decoration: none; transition: color 120ms, background 120ms; }
+.nav-link:hover { color: var(--fg-1); background: rgba(255,255,255,0.05); }
+.nav-link.active { color: var(--fg-1); }
+.nav-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body); font-size: 13px; font-weight: 500; border-radius: 7px; border: 1px solid transparent; cursor: pointer; transition: all 120ms var(--ease); text-decoration: none; white-space: nowrap; }
+.btn-sm { height: 30px; padding: 0 12px; }
+.btn-ghost { background: transparent; color: var(--fg-2); border-color: transparent; }
+.btn-ghost:hover { color: var(--fg-1); background: rgba(255,255,255,0.05); }
+.btn-primary { background: var(--accent-orange); color: #0c0c0f; border-color: var(--accent-orange); }
+.btn-primary:hover { background: #e85a24; }
+
+/* LAYOUT */
+.layout { display: flex; flex: 1; }
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px; flex-shrink: 0;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-subtle);
+  padding: 20px 12px;
+  position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto;
+}
+.sidebar-section { font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--fg-3); padding: 0 8px; margin: 0 0 8px; }
+.sidebar-section + .sidebar-section { margin-top: 20px; }
+.filter-item { display: flex; align-items: center; gap: 9px; padding: 7px 8px; border-radius: 7px; cursor: pointer; transition: background 120ms; font-size: 13px; color: var(--fg-2); margin-bottom: 1px; }
+.filter-item:hover { background: rgba(255,255,255,0.04); color: var(--fg-1); }
+.filter-item.active { color: var(--fg-1); background: rgba(255,255,255,0.07); font-weight: 500; }
+.filter-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.filter-count { margin-left: auto; font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); }
+.filter-check { display: flex; align-items: center; gap: 9px; padding: 6px 8px; border-radius: 6px; cursor: pointer; font-size: 13px; color: var(--fg-2); margin-bottom: 1px; transition: background 120ms; }
+.filter-check:hover { background: rgba(255,255,255,0.04); color: var(--fg-1); }
+.checkbox { width: 14px; height: 14px; border: 1px solid var(--border-default); border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.checkbox.checked { background: var(--accent-orange); border-color: var(--accent-orange); }
+.checkbox.checked::after { content: '✓'; font-size: 9px; color: #0c0c0f; font-weight: 700; }
+
+/* MAIN */
+.main { flex: 1; padding: 28px 28px; overflow-y: auto; }
+.main-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.main-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--fg-1); }
+.main-count { font-family: var(--font-mono); font-size: 13px; color: var(--fg-3); }
+.search-wrap { margin-left: auto; position: relative; }
+.search-input {
+  width: 240px; height: 34px; background: var(--bg-raised); border: 1px solid var(--border-default);
+  border-radius: 7px; color: var(--fg-1); font-family: var(--font-body); font-size: 13px;
+  padding: 0 12px 0 36px; outline: none; transition: border-color 120ms;
+}
+.search-input:focus { border-color: var(--accent-orange); box-shadow: 0 0 0 3px rgba(255,107,53,0.10); }
+.search-input::placeholder { color: var(--fg-3); }
+.search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--fg-3); width: 14px; height: 14px; }
+
+/* GRID */
+.tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.tool-card {
+  background: var(--bg-surface); border: 1px solid var(--border-default);
+  border-radius: 12px; overflow: hidden; cursor: pointer;
+  transition: border-color 200ms var(--ease), transform 120ms var(--ease);
+  display: flex; flex-direction: column;
+}
+.tool-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+.tool-card:active { transform: scale(0.98); }
+.tc-thumb { height: 80px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.tc-body { padding: 12px; flex: 1; }
+.tc-name { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--fg-1); margin-bottom: 5px; }
+.tc-desc { font-size: 12px; color: var(--fg-2); line-height: 1.55; }
+.tc-footer { padding: 8px 12px; border-top: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.tc-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; }
+.tc-badge { font-size: 9px; font-weight: 600; letter-spacing: 0.04em; padding: 2px 6px; border-radius: 9999px; border: 1px solid transparent; }
+.tc-version { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); margin-left: auto; }
+
+/* SECTION HEADER */
+.disc-header { display: flex; align-items: center; gap: 10px; margin: 28px 0 14px; }
+.disc-header:first-child { margin-top: 0; }
+.disc-name { font-size: 11px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; }
+.disc-line { flex: 1; height: 1px; background: var(--border-subtle); }
+.disc-count { font-size: 11px; color: var(--fg-3); font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="../homepage/index.html">
+    <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="3.5" height="24" rx="1.5" fill="#ff6b35"/><line x1="7.5" y1="16" x2="21" y2="7" stroke="#ff6b35" stroke-width="3.5" stroke-linecap="round"/><line x1="7.5" y1="16" x2="21" y2="25" stroke="#ff6b35" stroke-width="3.5" stroke-linecap="round"/></svg>
+    <span class="logo-text">kipfoot</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="../homepage/index.html">Tools</a>
+    <a class="nav-link active" href="#">Library</a>
+    <a class="nav-link" href="#">Docs</a>
+    <a class="nav-link" href="#">Pricing</a>
+  </div>
+  <div class="nav-right">
+    <a class="btn btn-sm btn-ghost" href="#">Log in</a>
+    <a class="btn btn-sm btn-primary" href="#">Get Access</a>
+  </div>
+</nav>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">Discipline</div>
+    <div class="filter-item active" onclick="setFilter(this,'all')">
+      <div class="filter-dot" style="background:var(--fg-3)"></div>
+      All Tools
+      <span class="filter-count">24</span>
+    </div>
+    <div class="filter-item" onclick="setFilter(this,'structural')">
+      <div class="filter-dot" style="background:#ff6b35"></div>
+      Structural
+      <span class="filter-count">8</span>
+    </div>
+    <div class="filter-item" onclick="setFilter(this,'geotechnical')">
+      <div class="filter-dot" style="background:#ffb347"></div>
+      Geotechnical
+      <span class="filter-count">4</span>
+    </div>
+    <div class="filter-item" onclick="setFilter(this,'hydraulic')">
+      <div class="filter-dot" style="background:#22d3ee"></div>
+      Hydraulic
+      <span class="filter-count">5</span>
+    </div>
+    <div class="filter-item" onclick="setFilter(this,'wind')">
+      <div class="filter-dot" style="background:#67e8f9"></div>
+      Wind / Environmental
+      <span class="filter-count">4</span>
+    </div>
+    <div class="filter-item" onclick="setFilter(this,'electrical')">
+      <div class="filter-dot" style="background:#a78bfa"></div>
+      Electrical
+      <span class="filter-count">3</span>
+    </div>
+
+    <div class="sidebar-section">Status</div>
+    <div class="filter-check">
+      <div class="checkbox checked"></div>
+      Stable
+    </div>
+    <div class="filter-check">
+      <div class="checkbox checked"></div>
+      Beta
+    </div>
+    <div class="filter-check">
+      <div class="checkbox"></div>
+      Coming Soon
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="main-header">
+      <span class="main-title">Tool Library</span>
+      <span class="main-count">24 tools</span>
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L13 13"/></svg>
+        <input class="search-input" type="text" placeholder="Search tools…">
+      </div>
+    </div>
+
+    <!-- STRUCTURAL -->
+    <div class="disc-header">
+      <span class="disc-name" style="color:#ff6b35">Structural</span>
+      <span class="disc-line"></span>
+      <span class="disc-count">8 tools</span>
+    </div>
+    <div class="tool-grid">
+
+      <div class="tool-card" onclick="window.location='../engineering-tool/index.html'">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,107,53,0.14) 0%,rgba(255,107,53,0.03) 100%)">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="4" y="32" width="36" height="2.5" rx="1.25" fill="#ff6b35" opacity="0.4"/><path d="M4 34 Q22 8 40 34" stroke="#ff6b35" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/><circle cx="22" cy="18" r="3.5" fill="#ff6b35" opacity="0.85"/><line x1="22" y1="22" x2="22" y2="34" stroke="#ff6b35" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.6"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Beam Analysis</div><div class="tc-desc">Bending moment, shear, and deflection for simply supported and continuous beams.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,107,53,0.15);color:#ff6b35">Structural</span><span class="tc-version">v2.1</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,107,53,0.10) 0%,rgba(255,107,53,0.02) 100%)">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="19" y="6" width="6" height="32" rx="2.5" fill="#ff6b35" opacity="0.22"/><rect x="13" y="6" width="18" height="5" rx="2" fill="#ff6b35" opacity="0.5"/><rect x="13" y="33" width="18" height="5" rx="2" fill="#ff6b35" opacity="0.5"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Column Design</div><div class="tc-desc">Axial and combined loading checks per AISC 360 and ACI 318.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,107,53,0.15);color:#ff6b35">Structural</span><span class="tc-version">v1.8</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,107,53,0.10) 0%,rgba(255,107,53,0.02) 100%)">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="6" y="30" width="32" height="2" rx="1" fill="#ff6b35" opacity="0.3"/><rect x="12" y="14" width="20" height="16" rx="1.5" fill="#ff6b35" opacity="0.10"/><circle cx="18" cy="24" r="2.5" fill="none" stroke="#ff6b35" stroke-width="1.5"/><circle cx="26" cy="24" r="2.5" fill="none" stroke="#ff6b35" stroke-width="1.5"/><circle cx="18" cy="16" r="2.5" fill="none" stroke="#ff6b35" stroke-width="1.5"/><circle cx="26" cy="16" r="2.5" fill="none" stroke="#ff6b35" stroke-width="1.5"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Bolt Group Analysis</div><div class="tc-desc">Elastic and instantaneous center methods for eccentric bolt groups.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,107,53,0.15);color:#ff6b35">Structural</span><span class="tc-badge" style="background:rgba(74,222,128,0.10);color:#4ade80;border-color:rgba(74,222,128,0.2)">Stable</span><span class="tc-version">v1.2</span></div>
+      </div>
+
+    </div>
+
+    <!-- GEOTECHNICAL -->
+    <div class="disc-header">
+      <span class="disc-name" style="color:#ffb347">Geotechnical</span>
+      <span class="disc-line"></span>
+      <span class="disc-count">4 tools</span>
+    </div>
+    <div class="tool-grid">
+
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,179,71,0.13) 0%,rgba(255,179,71,0.03) 100%)">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="8" y="8" width="28" height="2.5" rx="1.25" fill="#ffb347" opacity="0.5"/><rect x="10" y="15" width="24" height="1.5" rx="0.75" fill="#ffb347" opacity="0.35"/><rect x="12" y="21" width="20" height="1.5" rx="0.75" fill="#ffb347" opacity="0.25"/><rect x="20" y="8" width="4" height="30" rx="2" fill="#ffb347" opacity="0.5"/><circle cx="22" cy="37" r="3.5" fill="none" stroke="#ffb347" stroke-width="1.5"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Pile Capacity</div><div class="tc-desc">Axial and lateral capacity of driven piles in cohesive and cohesionless soils.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,179,71,0.15);color:#ffb347">Geotechnical</span><span class="tc-version">v1.3</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,179,71,0.10) 0%,rgba(255,179,71,0.02) 100%)">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="6" y="14" width="32" height="20" rx="2" fill="#ffb347" opacity="0.07"/><rect x="6" y="14" width="32" height="3" rx="1" fill="#ffb347" opacity="0.4"/><path d="M6 34 L22 20 L38 34" stroke="#ffb347" stroke-width="1.5" fill="none"/><path d="M6 34 L22 20 L38 34 L6 34Z" fill="#ffb347" opacity="0.10"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Bearing Capacity</div><div class="tc-desc">Terzaghi and Meyerhof general bearing capacity equations for shallow foundations.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,179,71,0.15);color:#ffb347">Geotechnical</span><span class="tc-version">v1.0</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(255,179,71,0.10) 0%,rgba(255,179,71,0.02) 100%)">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><path d="M6 38 L22 10 L38 38 Z" fill="#ffb347" opacity="0.10"/><path d="M6 38 L22 10 L38 38" stroke="#ffb347" stroke-width="1.5" fill="none"/><path d="M12 38 Q22 28 32 38" stroke="#ffb347" stroke-width="1" stroke-dasharray="3 2" fill="none" opacity="0.5"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Slope Stability</div><div class="tc-desc">Factor of safety for infinite slope and simplified Bishop method.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(255,179,71,0.15);color:#ffb347">Geotechnical</span><span class="tc-badge" style="background:rgba(255,107,53,0.12);color:#ff6b35;border-color:rgba(255,107,53,0.25)">Beta</span><span class="tc-version">v0.9</span></div>
+      </div>
+
+    </div>
+
+    <!-- HYDRAULIC -->
+    <div class="disc-header">
+      <span class="disc-name" style="color:#22d3ee">Hydraulic</span>
+      <span class="disc-line"></span>
+      <span class="disc-count">5 tools</span>
+    </div>
+    <div class="tool-grid">
+
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(34,211,238,0.12) 0%,rgba(34,211,238,0.03) 100%)">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><path d="M6 32 Q13 18 20 26 Q27 34 34 20 Q40 10 44 18" stroke="#22d3ee" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M6 38 Q13 30 20 34 Q27 38 34 28 Q40 20 44 26" stroke="#22d3ee" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round"/><rect x="6" y="40" width="38" height="2" rx="1" fill="#22d3ee" opacity="0.25"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Open Channel Flow</div><div class="tc-desc">Manning's equation for uniform flow in trapezoidal, rectangular, and circular channels.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(34,211,238,0.12);color:#22d3ee">Hydraulic</span><span class="tc-version">v1.0</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(34,211,238,0.10) 0%,rgba(34,211,238,0.02) 100%)">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="14" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity="0.4"/><circle cx="22" cy="22" r="8" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity="0.6"/><circle cx="22" cy="22" r="3" fill="#22d3ee" opacity="0.7"/><path d="M22 8 L22 14M22 30 L22 36M8 22 L14 22M30 22 L36 22" stroke="#22d3ee" stroke-width="1" opacity="0.4" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Storm Drain Sizing</div><div class="tc-desc">Design storm sewer pipes using rational method and Manning's full-flow equations.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(34,211,238,0.12);color:#22d3ee">Hydraulic</span><span class="tc-version">v1.1</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tc-thumb" style="background:linear-gradient(135deg,rgba(34,211,238,0.10) 0%,rgba(34,211,238,0.02) 100%)">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="6" y="28" width="32" height="8" rx="2" fill="#22d3ee" opacity="0.10"/><path d="M6 28 Q22 14 38 28" stroke="#22d3ee" stroke-width="1.5" fill="none"/><rect x="18" y="10" width="8" height="18" rx="2" fill="#22d3ee" opacity="0.15"/><rect x="20" y="8" width="4" height="4" rx="1" fill="#22d3ee" opacity="0.5"/></svg>
+        </div>
+        <div class="tc-body"><div class="tc-name">Culvert Hydraulics</div><div class="tc-desc">Inlet and outlet control analysis for circular and box culverts.</div></div>
+        <div class="tc-footer"><span class="tc-tag" style="background:rgba(34,211,238,0.12);color:#22d3ee">Hydraulic</span><span class="tc-badge" style="background:rgba(255,107,53,0.12);color:#ff6b35;border-color:rgba(255,107,53,0.25)">Beta</span><span class="tc-version">v0.8</span></div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script>
+function setFilter(el, discipline) {
+  document.querySelectorAll('.filter-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Badges & Tags</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: var(--bg-base); padding: 20px 24px; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--fg-3); text-transform: uppercase; margin: 16px 0 10px; font-family: var(--font-body); }
+  .section-label:first-child { margin-top: 0; }
+  .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  /* Base badge */
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--font-body); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.03em; padding: 3px 8px;
+    border-radius: 4px; border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .badge-pill { border-radius: 9999px; }
+  /* Status dot */
+  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Variants */
+  .badge-success  { background: rgba(74,222,128,0.10);  color: #4ade80;  border-color: rgba(74,222,128,0.20); }
+  .badge-warning  { background: rgba(255,179,71,0.10);  color: #ffb347;  border-color: rgba(255,179,71,0.20); }
+  .badge-error    { background: rgba(248,113,113,0.10); color: #f87171;  border-color: rgba(248,113,113,0.20); }
+  .badge-info     { background: rgba(34,211,238,0.10);  color: #22d3ee;  border-color: rgba(34,211,238,0.20); }
+  .badge-muted    { background: rgba(96,96,112,0.15);   color: #a0a0b0;  border-color: rgba(96,96,112,0.20); }
+  .badge-orange   { background: rgba(255,107,53,0.12);  color: #ff6b35;  border-color: rgba(255,107,53,0.25); }
+  .badge-purple   { background: rgba(167,139,250,0.10); color: #a78bfa;  border-color: rgba(167,139,250,0.20); }
+
+  /* Category tags — discipline */
+  .tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--font-body); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 4px;
+  }
+  .tag-structural  { background: rgba(255,107,53,0.15); color: #ff6b35; }
+  .tag-geotech     { background: rgba(255,179,71,0.15); color: #ffb347; }
+  .tag-hydraulic   { background: rgba(34,211,238,0.12); color: #22d3ee; }
+  .tag-electrical  { background: rgba(167,139,250,0.12); color: #a78bfa; }
+  .tag-mechanical  { background: rgba(74,222,128,0.12); color: #4ade80; }
+  .tag-wind        { background: rgba(103,232,249,0.12); color: #67e8f9; }
+</style>
+</head>
+<body>
+
+<div class="section-label">Status Badges</div>
+<div class="row">
+  <span class="badge badge-success"><span class="dot" style="background:#4ade80"></span>OK</span>
+  <span class="badge badge-warning"><span class="dot" style="background:#ffb347"></span>Near Limit</span>
+  <span class="badge badge-error"><span class="dot" style="background:#f87171"></span>Exceeded</span>
+  <span class="badge badge-info">Active</span>
+  <span class="badge badge-muted">Inactive</span>
+  <span class="badge badge-muted">Beta</span>
+  <span class="badge badge-orange">New</span>
+  <span class="badge badge-purple">Learn</span>
+</div>
+
+<div class="section-label">Pill Variants</div>
+<div class="row">
+  <span class="badge badge-pill badge-success"><span class="dot" style="background:#4ade80"></span>Capacity OK</span>
+  <span class="badge badge-pill badge-error"><span class="dot" style="background:#f87171"></span>Moment Exceeded</span>
+  <span class="badge badge-pill badge-warning"><span class="dot" style="background:#ffb347"></span>Deflection Limit</span>
+  <span class="badge badge-pill badge-muted">v2.1.0</span>
+</div>
+
+<div class="section-label">Discipline Tags</div>
+<div class="row">
+  <span class="tag tag-structural">Structural</span>
+  <span class="tag tag-geotech">Geotechnical</span>
+  <span class="tag tag-hydraulic">Hydraulic</span>
+  <span class="tag tag-electrical">Electrical</span>
+  <span class="tag tag-mechanical">Mechanical</span>
+  <span class="tag tag-wind">Wind</span>
+</div>
+
+</body>
+</html>
